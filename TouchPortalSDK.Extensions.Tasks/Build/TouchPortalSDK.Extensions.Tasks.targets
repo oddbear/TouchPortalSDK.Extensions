@@ -1,0 +1,8 @@
+﻿<Project>
+  <Target Name="BuildEntryFileTask" AfterTargets="PostBuildEvent">
+    <BuildEntryFile MSBuildProjectDirectory="$(MSBuildProjectDirectory)"
+                    OutDir="$(OutDir)"
+                    AssemblyName="$(AssemblyName)"
+                    OutputType="$(OutputType)" />
+  </Target>
+</Project>

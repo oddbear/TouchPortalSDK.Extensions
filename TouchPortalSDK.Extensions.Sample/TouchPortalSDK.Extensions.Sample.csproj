@@ -6,11 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="TouchPortalSDK.Extensions.Tasks" Version="0.1.0-build-*" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\TouchPortalSDK.Extensions\TouchPortalSDK.Extensions.csproj" />
   </ItemGroup>
 
+  <Target Name="Build Entry File" AfterTargets="Build">
+    <Exec Command="dotnet tool update TouchPortalSDK.Extensions.Tool --version 0.1.0-*" />
+    <Exec Command="dotnet tool run TouchPortalSDK -o $(OutDir) -a $(AssemblyName)" />
+  </Target>
 </Project>

@@ -9,9 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TouchPortalSDK.Extensions.S
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensions", "Extensions", "{B48BEAF3-601B-4741-82C3-8648885E0CAA}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tasks", "Tasks", "{E36E5554-A24C-4392-964F-C7BA505F94E0}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{E36E5554-A24C-4392-964F-C7BA505F94E0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TouchPortalSDK.Extensions.Tasks", "TouchPortalSDK.Extensions.Tasks\TouchPortalSDK.Extensions.Tasks.csproj", "{10342B42-1FB8-40B6-802C-34370EE74DF8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TouchPortalSDK.Extensions.Tool", "TouchPortalSDK.Extensions.Tool\TouchPortalSDK.Extensions.Tool.csproj", "{10342B42-1FB8-40B6-802C-34370EE74DF8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TouchPortalSDK.Extensions.Attributes", "TouchPortalSDK.Extensions.Attributes\TouchPortalSDK.Extensions.Attributes.csproj", "{C62F838F-1336-4CCC-8D1B-61C8A9FE966D}"
 EndProject

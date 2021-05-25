@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Great getting started resource: https://github.com/CodeConversations/MSBuild-Features-With-Nate-McMaster -->
+  <PropertyGroup>
+    <!-- There is a nuget resore loop bug if seconds is included in this expresion: https://github.com/dotnet/project-system/issues/1457 -->
+    <VersionPrefix>0.1.0</VersionPrefix>
+    <VersionSuffix>build-$([System.DateTime]::Now.ToString('yyyyMMdd-HHmm'))</VersionSuffix>
+
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>TouchPortalSDK</ToolCommandName>
+    <PackageOutputPath>C:\temp\LocalNugetFeed\</PackageOutputPath>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Mono.Options" Version="6.6.0.161" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TouchPortalSDK.Extensions.Attributes\TouchPortalSDK.Extensions.Attributes.csproj" />
+  </ItemGroup>
+</Project>

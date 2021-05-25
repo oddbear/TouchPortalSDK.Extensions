@@ -1,4 +1,5 @@
-﻿#if NETSTANDARD
+﻿#if NET5_0
+using System;
 using System.IO;
 using System.Reflection;
 using System.Runtime.Loader;
@@ -6,11 +7,12 @@ using System.Runtime.Loader;
 namespace TouchPortalSDK.Extensions.Tasks
 {
     public class IsolatedAssemblyLoadContext :
-        AssemblyLoadContext
+        AssemblyLoadContext, IDisposable
     {
         private string _basePath;
 
         public IsolatedAssemblyLoadContext(string basePath)
+            : base(true)
         {
             _basePath = basePath;
         }
@@ -21,7 +23,7 @@ namespace TouchPortalSDK.Extensions.Tasks
             if (File.Exists(assemblyFile))
                 return base.LoadFromAssemblyPath(assemblyFile);
 
-            return null;
+            return base.LoadFromAssemblyName(assemblyName);
         }
 
         public Assembly LoadFrom(string assemblyFile)
@@ -30,10 +32,9 @@ namespace TouchPortalSDK.Extensions.Tasks
             return base.LoadFromAssemblyPath(path);
         }
         
-        public void Unload()
+        public void Dispose()
         {
-            //TODO: Not supported on netstandard, however, it is supported in .Net 5
-            //base.Unload();
+            base.Unload();
         }
     }
 }

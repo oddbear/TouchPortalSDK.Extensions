@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Reflection;
 using Microsoft.Build.Framework;
 using Newtonsoft.Json;
 using TouchPortalSDK.Extensions.Attributes.Reflection;
@@ -31,8 +30,26 @@ namespace TouchPortalSDK.Extensions.Tasks
         [Required]
         public string AssemblyName { get; set; }
 
-        [Required]
-        public string OutputType { get; set; }
+        private string GetBasePath()
+        {
+            return Path.Combine(MSBuildProjectDirectory, OutDir);
+        }
+
+        private string GetMainAssemblyName(string assemblyName)
+        {
+            var dllFile = $"{assemblyName}.dll";;
+            var exeFile = $"{assemblyName}.exe";
+
+            //.Net 5x (dotnet core can be .dll or .exe):
+            if (File.Exists(Path.Combine(GetBasePath(), dllFile)))
+                return dllFile;
+
+            //.Net 4x (Managed), .Net 5 has an unmanaged .exe file, check for .dll:
+            if (File.Exists(Path.Combine(GetBasePath(), exeFile)))
+                return exeFile;
+
+            return null;
+        }
 
         public override bool Execute()
         {
@@ -42,22 +59,21 @@ namespace TouchPortalSDK.Extensions.Tasks
             try
             {
                 Log.LogMessage(MessageImportance.High, "Task started!");
-                
-                var extension = OutputType == "Exe" ? ".exe" : ".dll";
-                var folder = Path.Combine(MSBuildProjectDirectory, OutDir);
-                var fileName = AssemblyName + extension;
-                var fileToInspect = Path.Combine(folder, fileName);
 
-                if (!File.Exists(fileToInspect))
+                var basePath = GetBasePath();
+                var fileName = GetMainAssemblyName(AssemblyName);
+
+                if (fileName is null)
                 {
-                    Log.LogError($"Expected file did not exist: '{fileToInspect}'");
+                    Log.LogError($"Expected file did not exist: '{Path.Combine(basePath, AssemblyName)}'");
                     return false;
                 }
 
 #if NET472
-                var assembly = Assembly.LoadFrom(fileToInspect);
+                var mainAssembly = Path.Combine(basePath, fileName);
+                var assembly = System.Reflection.Assembly.LoadFrom(mainAssembly);
 #else
-                var appContext = new IsolatedAssemblyLoadContext(folder);
+                using var appContext = new IsolatedAssemblyLoadContext(basePath);
                 var assembly = appContext.LoadFrom(fileName);
 #endif
                 var pluginAnalyzer = new PluginAnalyzer(assembly);
@@ -67,7 +83,7 @@ namespace TouchPortalSDK.Extensions.Tasks
                 var entryFileObject = entryFileBuilder.BuildEntryFile();
                 var entryFileContents = JsonConvert.SerializeObject(entryFileObject);
 
-                var entryFilePath = Path.Combine(folder, "entry.tp");
+                var entryFilePath = Path.Combine(basePath, "entry.tp");
 
                 File.WriteAllText(entryFilePath, entryFileContents);
 

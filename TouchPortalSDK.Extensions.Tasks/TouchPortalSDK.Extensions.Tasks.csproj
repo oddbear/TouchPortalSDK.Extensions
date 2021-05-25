@@ -6,7 +6,7 @@
     <VersionPrefix>0.1.0</VersionPrefix>
     <VersionSuffix>build-$([System.DateTime]::Now.ToString('yyyyMMdd-HHmm'))</VersionSuffix>
 
-    <TargetFrameworks>netstandard2.0;net472</TargetFrameworks>
+    <TargetFrameworks>net5.0;net472</TargetFrameworks>
     <BuildOutputTargetFolder>tools</BuildOutputTargetFolder>
 
     <!--
@@ -27,10 +27,6 @@
 
     <PackageReference Update="@(PackageReference)" PrivateAssets="All" />
 
-  </ItemGroup>
-
-  <ItemGroup Condition="$(TargetFramework) == 'netstandard2.0'">
-    <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup>

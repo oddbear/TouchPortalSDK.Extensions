@@ -1,6 +1,7 @@
 ﻿using Mono.Options;
 using System;
 using System.IO;
+using System.IO.Compression;
 using System.Reflection;
 using System.Text.Json;
 using TouchPortalSDK.Extensions.Attributes.Reflection;
@@ -11,6 +12,8 @@ namespace TouchPortalSDK.Extensions.Tool
 	{
         static void Main(string[] args)
         {
+            var entry = false;
+            var package = false; //TODO: find a configuration that works. And why not toggle with a output file path?
             var showHelp = false;
             var outdir = ".";
             var assemblyName = string.Empty;
@@ -18,9 +21,11 @@ namespace TouchPortalSDK.Extensions.Tool
             //"h|help", "show this message and exit"
             var options = new OptionSet
             {
-                { "o|outdir=", "the name of someone to greet.", o => outdir = o },
-                { "a|assemblyName=", "the number of times to repeat the greeting.", a => assemblyName = a },
-                { "h|help", "show this message and exit", (bool h) => showHelp = h },
+                { "e|entry", "Creates the entry.tp file.", (bool e) => entry = e },
+                { "p|package", "Creates the .tpp package file.", (bool p) => package = p },
+                { "o|outdir=", "The output directory of the build, ex. $(OutDir) if using variable.", o => outdir = o },
+                { "a|assemblyName=", "Assembly name of the plugin, ex. $(AssemblyName) if using variable.", a => assemblyName = a },
+                { "h|help", "Show this message and exit", (bool h) => showHelp = h },
             };
 
             options.Parse(args);
@@ -31,6 +36,20 @@ namespace TouchPortalSDK.Extensions.Tool
                 return;
             }
 
+            if (entry)
+            {
+                CreateEntryFile(outdir, assemblyName);
+            }
+
+            if (package)
+            {
+                //TODO: Publish path... On publish trigger?
+                //PackageTppFile(assemblyName, "", "");
+            }
+        }
+
+        private static void CreateEntryFile(string outdir, string assemblyName)
+        {
             var assemblyPath = GetAssemblyPath(outdir, assemblyName);
             var assemblyFile = Assembly.LoadFrom(assemblyPath);
             var versionString = assemblyFile
@@ -54,7 +73,28 @@ namespace TouchPortalSDK.Extensions.Tool
 
             File.WriteAllText(entryFilePath, entryFileContents);
         }
-        
+
+        private static void PackageTppFile(string pluginId, string publishPath, string outputPath)
+        {
+            //Find entry.tp before archiving...
+            var files = Directory.GetFiles(publishPath, "*");
+
+            if (File.Exists(outputPath))
+                File.Delete(outputPath);
+            
+            using (var archive = ZipFile.Open(outputPath, ZipArchiveMode.Create))
+            {
+                //The "secret sauce" to get this working in Java:
+                var directory = archive.CreateEntry($"{pluginId}/");
+
+                foreach (var file in files)
+                {
+                    var pluginEntryName = Path.Combine(pluginId, Path.GetFileName(file));
+                    archive.CreateEntryFromFile(file, pluginEntryName);
+                }
+            }
+        }
+
         private static void ShowHelp(OptionSet options)
         {
             Console.WriteLine("Usage: dotnet tool run TouchPortalSDK [OPTIONS]+");

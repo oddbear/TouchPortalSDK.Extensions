@@ -11,6 +11,10 @@
 
   <Target Name="Build Entry File" AfterTargets="Build">
     <Exec Command="dotnet tool update TouchPortalSDK.Extensions.Tool --version 0.1.0-*" />
-    <Exec Command="dotnet tool run TouchPortalSDK -o $(OutDir) -a $(AssemblyName)" />
+    <Exec Command="dotnet tool run TouchPortalSDK entry -o $(OutDir) -a $(AssemblyName)" />
+  </Target>
+
+  <Target Name="Package Plugin" AfterTargets="AfterPublish">
+    <Exec Command="dotnet tool run TouchPortalSDK package -o $(OutDir) -a $(AssemblyName)" />
   </Target>
 </Project>

@@ -6,13 +6,18 @@ namespace TouchPortalSDK.Extensions.Attributes.Attributes
     public class ActionAttribute : Attribute
     {
         public string Category { get; }
-        public string Name { get; }
 
-        public ActionAttribute(string category, string name)
+        public string Id { get; }
+        public string Name { get; }
+        public string Format { get; }
+
+        public ActionAttribute(string category, string id = null, string name = null, string format = null)
         {
-            //TODO: Lookup category to check if it's actually real... Give build error if not.
             Category = category;
+
+            Id = id;
             Name = name;
+            Format = format;
         }
     }
 }

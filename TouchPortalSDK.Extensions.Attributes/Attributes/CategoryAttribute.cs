@@ -7,11 +7,13 @@ namespace TouchPortalSDK.Extensions.Attributes.Attributes
     {
         public string Id { get; }
         public string Name { get; }
+        public string ImagePath { get; }
 
-        public CategoryAttribute(string name, string id = null)
+        public CategoryAttribute(string id = null, string name = null, string imagePath = null)
         {
             Id = id;
             Name = name;
+            ImagePath = imagePath;
         }
     }
 }

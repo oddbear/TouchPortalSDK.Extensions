@@ -26,6 +26,7 @@ namespace TouchPortalSDK.Extensions.Tool
                 { "o|outdir=", "The output directory of the build, ex. $(OutDir) if using variable.", o => outdir = o },
                 { "a|assemblyName=", "Assembly name of the plugin, ex. $(AssemblyName) if using variable.", a => assemblyName = a },
                 { "h|help", "Show this message and exit", (bool h) => showHelp = h },
+                //TODO: LogLevel, error, warn, verbose...
             };
 
             options.Parse(args);
@@ -59,19 +60,19 @@ namespace TouchPortalSDK.Extensions.Tool
             Console.WriteLine("Test: -------- ");
             Console.WriteLine($"Generating from assembly: '{assemblyFile.Location}', version: '{versionString}'");
 
-            var pluginAnalyzer = new PluginAnalyzer(assemblyFile);
-            var generatorIdentifiers = new GeneratorIdentifiers(pluginAnalyzer);
-            var entryFileBuilder = new EntryFileBuilder(pluginAnalyzer, generatorIdentifiers);
+            //var pluginAnalyzer = new PluginTree(assemblyFile);
+            //var generatorIdentifiers = new GeneratorIdentifiers(pluginAnalyzer);
+            //var entryFileBuilder = new EntryFileBuilder(pluginAnalyzer, generatorIdentifiers);
 
-            var entryFileObject = entryFileBuilder.BuildEntryFile();
-            var entryFileContents = JsonSerializer.Serialize(entryFileObject, new JsonSerializerOptions
-            {
-                WriteIndented = true
-            });
+            //var entryFileObject = entryFileBuilder.BuildEntryFile();
+            //var entryFileContents = JsonSerializer.Serialize(entryFileObject, new JsonSerializerOptions
+            //{
+            //    WriteIndented = true
+            //});
 
-            var entryFilePath = Path.Combine(outdir, "entry.tp");
+            //var entryFilePath = Path.Combine(outdir, "entry.tp");
 
-            File.WriteAllText(entryFilePath, entryFileContents);
+            //File.WriteAllText(entryFilePath, entryFileContents);
         }
 
         private static void PackageTppFile(string pluginId, string publishPath, string outputPath)

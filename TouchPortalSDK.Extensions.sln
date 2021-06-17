@@ -17,6 +17,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TouchPortalSDK.Extensions.A
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Attributes", "Attributes", "{B0EEA458-D9D6-4E6E-A1C5-F57D9CC20F09}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{D5417CEF-A3A2-4117-B76D-0516EEBC1BEE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TouchPortalSDK.Extensions.Attributes.Tests", "TouchPortalSDK.Extensions.Attributes.Tests\TouchPortalSDK.Extensions.Attributes.Tests.csproj", "{8B5DD461-ED6C-44D8-8A9E-1F5E63EC2A0C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,10 @@ Global
 		{C62F838F-1336-4CCC-8D1B-61C8A9FE966D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C62F838F-1336-4CCC-8D1B-61C8A9FE966D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C62F838F-1336-4CCC-8D1B-61C8A9FE966D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B5DD461-ED6C-44D8-8A9E-1F5E63EC2A0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B5DD461-ED6C-44D8-8A9E-1F5E63EC2A0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B5DD461-ED6C-44D8-8A9E-1F5E63EC2A0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B5DD461-ED6C-44D8-8A9E-1F5E63EC2A0C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,6 +56,7 @@ Global
 		{918467B2-4043-4557-B0CE-420E2343C99C} = {B48BEAF3-601B-4741-82C3-8648885E0CAA}
 		{10342B42-1FB8-40B6-802C-34370EE74DF8} = {E36E5554-A24C-4392-964F-C7BA505F94E0}
 		{C62F838F-1336-4CCC-8D1B-61C8A9FE966D} = {B0EEA458-D9D6-4E6E-A1C5-F57D9CC20F09}
+		{8B5DD461-ED6C-44D8-8A9E-1F5E63EC2A0C} = {D5417CEF-A3A2-4117-B76D-0516EEBC1BEE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {65EED9E9-6DD6-4EC3-B9EB-95ED2BC01677}

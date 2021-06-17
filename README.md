@@ -2,6 +2,8 @@
 
 Building entry.tp file by analyzing the code.
 
+Made in the spirit of the great [Java SDK](https://github.com/ChristopheCVB/TouchPortalPluginSDK).
+
 What I want this to do:
 * Create entry.tp file
 * Call the correct actions etc.

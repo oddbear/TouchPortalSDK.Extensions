@@ -2,7 +2,7 @@
 
 Building entry.tp file by analyzing the code.
 
-Made in the spirit of the great [Java SDK](https://github.com/ChristopheCVB/TouchPortalPluginSDK).
+Made in the spirit of the great [Java SDK](https://github.com/ChristopheCVB/TouchPortalPluginSDK), using the [TouchPortalSDK](https://github.com/oddbear/TouchPortalSDK).
 
 What I want this to do:
 * Create entry.tp file

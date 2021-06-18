@@ -2,35 +2,67 @@
 
 namespace TouchPortalSDK.Extensions.Attributes.Attributes
 {
-    [AttributeUsage(AttributeTargets.Property)]
-    public class SettingAttribute : Attribute
+    public static class Setting
     {
-        public string Name { get; }
-        public string Default { get; }
-        public string Type { get; }
-        public string MaxLength { get; }
-        public bool IsPassword { get; }
-        public string MinValue { get; }
-        public string MaxValue { get; }
-        public bool ReadOnly { get; }
+        public abstract class SettingAttribute : Attribute
+        {
+            public string Name { get; }
+            public string Type { get; }
+            public string Default { get; protected set; }
+            public int? MaxLength { get; protected set; }
+            public bool IsPassword { get; }
+            public object MinValue { get; protected set; }
+            public object MaxValue { get; protected set; }
+            public bool ReadOnly { get; }
 
-        public SettingAttribute(string name = null,
+            protected SettingAttribute(string name, string type, bool isPassword, bool readOnly)
+            {
+                Name = name;
+                Type = type;
+                IsPassword = isPassword;
+                ReadOnly = readOnly;
+            }
+        }
+
+        [AttributeUsage(AttributeTargets.Property)]
+        public class TextAttribute : SettingAttribute
+        {
+            public TextAttribute(string name = null,
                                  string @default = null,
                                  string type = null,
-                                 string maxLength = null,
+                                 int maxLength = int.MinValue,
                                  bool isPassword = false,
-                                 string minValue = null,
-                                 string maxValue = null,
                                  bool readOnly = false)
+                : base(name, type, isPassword, readOnly)
+            {
+                Default = @default;
+
+                if (maxLength > 0)
+                    MaxLength = maxLength;
+            }
+        }
+
+        [AttributeUsage(AttributeTargets.Property)]
+        public class NumberAttribute : SettingAttribute
         {
-            Name = name;
-            Default = @default;
-            Type = type;
-            MaxLength = maxLength;
-            IsPassword = isPassword;
-            MinValue = minValue;
-            MaxValue = maxValue;
-            ReadOnly = readOnly;
+            public NumberAttribute(string name = null,
+                                   double @default = 0,
+                                   string type = null,
+                                   bool isPassword = false,
+                                   double minValue = double.NegativeInfinity,
+                                   double maxValue = double.PositiveInfinity,
+                                   bool readOnly = false)
+                : base(name, type, isPassword, readOnly)
+            {
+                if (@default > 0)
+                    Default = @default.ToString(); //TODO: Find the correct culture settings for Touch Portal.
+
+                if (minValue > double.NegativeInfinity)
+                    MinValue = minValue;
+
+                if (maxValue < double.PositiveInfinity)
+                    MaxValue = maxValue;
+            }
         }
     }
 }

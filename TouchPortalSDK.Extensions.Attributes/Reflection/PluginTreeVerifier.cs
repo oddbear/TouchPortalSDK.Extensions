@@ -72,5 +72,9 @@ namespace TouchPortalSDK.Extensions.Attributes.Reflection
                 throw new NotImplementedException("Must have children on this one?");
             }
         }
+
+        //TODO: Verify min value < max value.
+
+        //TODO: Verify things like Data.Number -> int, double etc., and Data.Text -> String
     }
 }

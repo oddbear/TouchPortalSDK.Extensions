@@ -3,15 +3,16 @@ using NUnit.Framework;
 using TouchPortalSDK.Extensions.Attributes.Attributes;
 using TouchPortalSDK.Extensions.Attributes.Reflection;
 using TouchPortalSDK.Extensions.Attributes.Reflection.Contexts;
+using CategoryAttribute = TouchPortalSDK.Extensions.Attributes.Attributes.CategoryAttribute;
 
 namespace TouchPortalSDK.Extensions.Attributes.Tests.EntryFile.Categories
 {
     [Plugin]
-    public class Categories_Some_Test
+    public class Categories_Enum_None_Test
     {
         public enum Categories
         {
-            [Attributes.Category(id:"categoryId",name:"Category Name",imagePath:"imagePath")]
+            [Category]
             Category1
         }
 
@@ -31,21 +32,21 @@ namespace TouchPortalSDK.Extensions.Attributes.Tests.EntryFile.Categories
         }
 
         [Test]
-        public void Category_Id_Set_Test()
+        public void Category_Id_Empty_Test()
         {
-            Assert.AreEqual("categoryId", _category["id"]);
+            Assert.AreEqual(_pluginId + ".Category1", _category["id"]);
         }
 
         [Test]
-        public void Category_Name_Set_Test()
+        public void Category_Name_Empty_Test()
         {
-            Assert.AreEqual("Category Name", _category["name"]);
+            Assert.AreEqual("Category1", _category["name"]);
         }
 
         [Test]
         public void Category_ImagePath_Set_Test()
         {
-            Assert.AreEqual("imagePath", _category["imagepath"]);
+            Assert.Throws<KeyNotFoundException>(() => _ =_category["imagepath"]);
         }
     }
 }

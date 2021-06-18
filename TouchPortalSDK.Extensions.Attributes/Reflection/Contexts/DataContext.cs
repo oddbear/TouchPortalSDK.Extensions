@@ -6,11 +6,11 @@ namespace TouchPortalSDK.Extensions.Attributes.Reflection.Contexts
     public class DataContext
     {
         public ActionContext ActionContext { get; }
-        public DataAttribute DataAttribute { get; }
+        public Data.DataAttribute DataAttribute { get; }
         public MethodInfo MethodInfo { get; }
         public ParameterInfo ParameterInfo { get; }
 
-        public DataContext(ActionContext actionContext, DataAttribute dataAttribute, MethodInfo methodInfo, ParameterInfo parameterInfo)
+        public DataContext(ActionContext actionContext, Data.DataAttribute dataAttribute, MethodInfo methodInfo, ParameterInfo parameterInfo)
         {
             ActionContext = actionContext;
             DataAttribute = dataAttribute;

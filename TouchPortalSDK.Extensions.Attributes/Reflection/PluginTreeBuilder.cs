@@ -74,7 +74,7 @@ namespace TouchPortalSDK.Extensions.Attributes.Reflection
                 .GetProperties()
                 .Select(property => new
                 {
-                    attribute = property.GetCustomAttribute<SettingAttribute>(),
+                    attribute = property.GetCustomAttribute<Setting.SettingAttribute>(),
                     property
                 })
                 .Where(setting => setting.attribute != null)
@@ -88,7 +88,15 @@ namespace TouchPortalSDK.Extensions.Attributes.Reflection
 
         private static void SetCategories(List<CategoryContext> categoryContexts, PluginContext pluginContext)
         {
-            var categories = pluginContext
+            //Get category from class:
+            var categoriesClassAttribute = pluginContext.Type.GetCustomAttribute<CategoryAttribute>();
+            if (categoriesClassAttribute != null)
+            {
+                categoryContexts.Add(new CategoryContext(pluginContext, categoriesClassAttribute, null));
+            }
+
+            //Get categories from Enum:
+            var categoriesEnum = pluginContext
                 .Type
                 .GetNestedTypes()
                 .Where(type => type.IsEnum)
@@ -101,9 +109,15 @@ namespace TouchPortalSDK.Extensions.Attributes.Reflection
                 .Where(category => category.attribute != null)
                 .ToArray();
 
-            foreach (var category in categories)
+            foreach (var category in categoriesEnum)
             {
                 categoryContexts.Add(new CategoryContext(pluginContext, category.attribute, category.field));
+            }
+
+            //No categories, create a simple default one:
+            if (!categoryContexts.Any())
+            {
+                categoryContexts.Add(new CategoryContext(pluginContext, new CategoryAttribute(), null));
             }
         }
 
@@ -122,6 +136,9 @@ namespace TouchPortalSDK.Extensions.Attributes.Reflection
             {
                 var categoryContext = plugin.CategoryContexts
                     .SingleOrDefault(category => category.GetName() == action.attribute.Category);
+
+                if (categoryContext is null && plugin.CategoryContexts.Count == 1)
+                    categoryContext = plugin.CategoryContexts.Single();
                 
                 //TODO: How can I generate the Format without any Datas?
                 //TODO: And the datas needs a parent to generate the ID. One way is to have a reference to the PluginTree(Context?) in all of them.
@@ -135,7 +152,7 @@ namespace TouchPortalSDK.Extensions.Attributes.Reflection
                 .GetMethods()
                 .SelectMany(method => method.GetParameters().Select(parameter => (parameter, method)))
                 .Select(tuple => new {
-                    attribute = tuple.parameter.GetCustomAttribute<DataAttribute>(),
+                    attribute = tuple.parameter.GetCustomAttribute<Data.DataAttribute>(),
                     tuple.parameter,
                     tuple.method
                 })
@@ -165,7 +182,10 @@ namespace TouchPortalSDK.Extensions.Attributes.Reflection
             {
                 var categoryContext = plugin.CategoryContexts
                     .SingleOrDefault(category => category.GetName() == state.attribute.Category);
-                
+
+                if (categoryContext is null && plugin.CategoryContexts.Count == 1)
+                    categoryContext = plugin.CategoryContexts.Single();
+
                 stateContexts.Add(new StateContext(categoryContext, state.attribute, state.property));
             }
         }

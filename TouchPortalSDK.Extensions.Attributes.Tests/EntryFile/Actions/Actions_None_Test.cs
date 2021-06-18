@@ -3,26 +3,19 @@ using NUnit.Framework;
 using TouchPortalSDK.Extensions.Attributes.Attributes;
 using TouchPortalSDK.Extensions.Attributes.Reflection;
 using TouchPortalSDK.Extensions.Attributes.Reflection.Contexts;
-using Data = TouchPortalSDK.Extensions.Attributes.Attributes.DataAttribute;
 
 namespace TouchPortalSDK.Extensions.Attributes.Tests.EntryFile.Actions
 {
     [Plugin]
     public class Actions_None_Test
     {
-        public enum Categories
-        {
-            [Attributes.Category]
-            Category1
-        }
-
         private PluginContext _pluginContext;
         private string _pluginId;
         private Dictionary<string, object> _category;
         private Dictionary<string, object> _action;
 
-        [Action("Category1")]
-        public void Action([Data]string strValue, [Data]int intValue)
+        [Action]
+        public void Action()
         {
             //
         }
@@ -43,7 +36,7 @@ namespace TouchPortalSDK.Extensions.Attributes.Tests.EntryFile.Actions
         [Test]
         public void Action_Id_Empty_Test()
         {
-            Assert.AreEqual(_pluginId + ".Category1.action." + nameof(Action), _action["id"]);
+            Assert.AreEqual(_pluginId + ".DefaultCategory.action." + nameof(Action), _action["id"]);
         }
 
         [Test]
@@ -55,8 +48,33 @@ namespace TouchPortalSDK.Extensions.Attributes.Tests.EntryFile.Actions
         [Test]
         public void Action_Format_Set_Test()
         {
-            //TODO: What should be the default behaviour here? Need to test how Touch Portal interact with it. Should it be empty?
+            //TODO: This rule might change to generate a default in the future:
             Assert.Throws<KeyNotFoundException>(() => _ = _action["format"]);
+        }
+
+        [Test]
+        public void Action_Description_Set_Test()
+        {
+            //TODO: This rule might change to generate a default in the future:
+            Assert.Throws<KeyNotFoundException>(() => _ = _action["description"]);
+        }
+
+        [Test]
+        public void Action_Prefix_Empty_Test()
+        {
+            Assert.AreEqual(string.Empty, _action["prefix"]);
+        }
+
+        [Test]
+        public void Action_TryInline_Empty_Test()
+        {
+            Assert.AreEqual(false, _action["tryInline"]);
+        }
+
+        [Test]
+        public void Action_HasHoldFunctionality_Empty_Test()
+        {
+            Assert.AreEqual(false, _action["hasHoldFunctionality"]);
         }
     }
 }

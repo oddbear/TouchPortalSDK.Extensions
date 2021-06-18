@@ -9,18 +9,12 @@ namespace TouchPortalSDK.Extensions.Attributes.Tests.EntryFile.Settings
     [Plugin]
     public class Settings_Some_Test
     {
-        [Setting(name:"name", @default: "default", type:"type",maxLength:"maxLength",isPassword:true,minValue:"minValue",maxValue:"maxValue",readOnly:true)]
+        [Setting.Text(name:"name", @default: "default", type:"text", maxLength:5, isPassword:true, readOnly:true)]
         public string TextSetting { get; set; }
 
-        [Setting(name: "name", @default: "default", type: "type", maxLength: "maxLength", isPassword: true, minValue: "minValue", maxValue: "maxValue", readOnly: true)]
+        [Setting.Number(name: "name", @default: 3, type: "number", isPassword: true, minValue: 0, maxValue: 5, readOnly: true)]
         public int NumberSetting { get; set; }
-
-        public enum Categories
-        {
-            [Attributes.Category(id: "categoryId", name: "Category Name", imagePath: "imagePath")]
-            Category1
-        }
-
+        
         private PluginContext _pluginContext;
         private Dictionary<string, object> _textSetting;
         private Dictionary<string, object> _numberSetting;
@@ -41,6 +35,27 @@ namespace TouchPortalSDK.Extensions.Attributes.Tests.EntryFile.Settings
         {
             Assert.AreEqual("name", _textSetting["name"]);
             Assert.AreEqual("name", _numberSetting["name"]);
+        }
+
+        [Test]
+        public void Setting_Type_Empty_Test()
+        {
+            Assert.AreEqual("text", _textSetting["type"]);
+            Assert.AreEqual("number", _numberSetting["type"]);
+        }
+
+        [Test]
+        public void Setting_ReadOnly_Empty_Test()
+        {
+            Assert.AreEqual(true, _textSetting["readOnly"]);
+            Assert.AreEqual(true, _numberSetting["readOnly"]);
+        }
+
+        [Test]
+        public void Setting_IsPassword_Empty_Test()
+        {
+            Assert.AreEqual(true, _textSetting["isPassword"]);
+            Assert.AreEqual(true, _numberSetting["isPassword"]);
         }
     }
 }

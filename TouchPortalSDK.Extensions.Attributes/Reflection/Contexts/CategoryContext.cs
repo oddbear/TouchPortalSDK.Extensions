@@ -8,7 +8,7 @@ namespace TouchPortalSDK.Extensions.Attributes.Reflection.Contexts
         public PluginContext PluginContext { get; set; }
         public CategoryAttribute CategoryAttribute { get; }
         public FieldInfo FieldInfo { get; }
-
+        
         public CategoryContext(PluginContext pluginContext, CategoryAttribute categoryAttribute, FieldInfo fieldInfo)
         {
             PluginContext = pluginContext;
@@ -19,14 +19,14 @@ namespace TouchPortalSDK.Extensions.Attributes.Reflection.Contexts
         public string GetId()
             => !string.IsNullOrWhiteSpace(CategoryAttribute.Id)
                 ? CategoryAttribute.Id
-                : $"{PluginContext.GetId()}.{FieldInfo.Name}";
+                : $"{PluginContext.GetId()}.{GetCategoryId()}";
 
         public string GetName()
             => !string.IsNullOrWhiteSpace(CategoryAttribute.Name)
                 ? CategoryAttribute.Name
-                : FieldInfo.Name;
+                : FieldInfo?.Name ?? PluginContext.GetName();
 
-        public string GetImagePath()
-            => CategoryAttribute.ImagePath;
+        private string GetCategoryId()
+            => FieldInfo?.Name ?? "DefaultCategory";
     }
 }

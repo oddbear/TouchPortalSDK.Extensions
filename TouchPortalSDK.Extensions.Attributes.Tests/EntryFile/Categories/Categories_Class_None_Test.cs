@@ -3,11 +3,13 @@ using NUnit.Framework;
 using TouchPortalSDK.Extensions.Attributes.Attributes;
 using TouchPortalSDK.Extensions.Attributes.Reflection;
 using TouchPortalSDK.Extensions.Attributes.Reflection.Contexts;
+using CategoryAttribute = TouchPortalSDK.Extensions.Attributes.Attributes.CategoryAttribute;
 
 namespace TouchPortalSDK.Extensions.Attributes.Tests.EntryFile.Categories
 {
-    [Plugin(name: "test plugin")]
-    public class Categories_None_Test
+    [Plugin]
+    [Category]
+    public class Categories_Class_None_Test
     {
         private PluginContext _pluginContext;
         private string _pluginId;
@@ -33,7 +35,8 @@ namespace TouchPortalSDK.Extensions.Attributes.Tests.EntryFile.Categories
         [Test]
         public void Category_Name_Empty_Test()
         {
-            Assert.AreEqual("test plugin", _category["name"]);
+            //Or it would be [Plugin(name: ...)] if that one is set.
+            Assert.AreEqual(nameof(Categories_Class_None_Test), _category["name"]);
         }
 
         [Test]

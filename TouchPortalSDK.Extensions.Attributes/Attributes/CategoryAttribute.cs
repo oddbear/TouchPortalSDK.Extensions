@@ -2,7 +2,7 @@
 
 namespace TouchPortalSDK.Extensions.Attributes.Attributes
 {
-    [AttributeUsage(AttributeTargets.Field)]
+    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Class)]
     public class CategoryAttribute : Attribute
     {
         public string Id { get; }

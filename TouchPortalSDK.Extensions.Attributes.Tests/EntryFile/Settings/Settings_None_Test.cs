@@ -9,18 +9,12 @@ namespace TouchPortalSDK.Extensions.Attributes.Tests.EntryFile.Settings
     [Plugin]
     public class Settings_None_Test
     {
-        [Setting]
+        [Setting.Text]
         public string TextSetting { get; set; }
 
-        [Setting]
+        [Setting.Number]
         public int NumberSetting { get; set; }
-
-        public enum Categories
-        {
-            [Attributes.Category(id: "categoryId", name: "Category Name", imagePath: "imagePath")]
-            Category1
-        }
-
+        
         private PluginContext _pluginContext;
         private Dictionary<string, object> _textSetting;
         private Dictionary<string, object> _numberSetting;
@@ -43,40 +37,49 @@ namespace TouchPortalSDK.Extensions.Attributes.Tests.EntryFile.Settings
             Assert.AreEqual("NumberSetting", _numberSetting["name"]);
         }
 
-        //[Test]
-        //public void Setting_Type_Empty_Test()
-        //{
-        //    Assert.AreEqual("categoryId", _category["id"]);
-        //}
+        [Test]
+        public void Setting_Type_Empty_Test()
+        {
+            Assert.AreEqual("text", _textSetting["type"]);
+            Assert.AreEqual("number", _numberSetting["type"]);
+        }
 
         //[Test]
         //public void Setting_Default_Empty_Test()
         //{
-        //    Assert.AreEqual("imagePath", _category["imagepath"]);
+        //    Assert.AreEqual("default", _category["default"]);
         //}
 
-        //[Test]
-        //public void Setting_ReadOnly_Empty_Test()
-        //{
-        //    Assert.AreEqual("imagePath", _category["imagepath"]);
-        //}
+        [Test]
+        public void Setting_ReadOnly_Empty_Test()
+        {
+            Assert.AreEqual(false, _textSetting["readOnly"]);
+            Assert.AreEqual(false, _numberSetting["readOnly"]);
+        }
 
         //[Test]
         //public void Setting_MaxLength_Empty_Test()
         //{
-        //    Assert.AreEqual("imagePath", _category["imagepath"]);
+        //    Assert.AreEqual("maxLength", _category["maxLength"]);
         //}
+
+        [Test]
+        public void Setting_IsPassword_Empty_Test()
+        {
+            Assert.AreEqual(false, _textSetting["isPassword"]);
+            Assert.AreEqual(false, _numberSetting["isPassword"]);
+        }
 
         //[Test]
         //public void Setting_MinValue_Empty_Test()
         //{
-        //    Assert.AreEqual("imagePath", _category["imagepath"]);
+        //    Assert.AreEqual("minValue", _category["minValue"]);
         //}
 
         //[Test]
         //public void Setting_MaxValue_Empty_Test()
         //{
-        //    Assert.AreEqual("imagePath", _category["imagepath"]);
+        //    Assert.AreEqual("maxValue", _category["maxValue"]);
         //}
     }
 }

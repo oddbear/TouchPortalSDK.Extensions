@@ -44,9 +44,11 @@ namespace TouchPortalSDK.Extensions.Attributes.Reflection
                 category["name"] = categoryContext.GetName();
                 if (categoryContext.GetImagePath() != null)
                     category["imagepath"] = categoryContext.GetImagePath();
+
                 category["actions"] = BuildActions(pluginContext, categoryContext);
                 category["states"] = BuildStates(pluginContext, categoryContext);
                 category["events"] = BuildEvents(pluginContext, categoryContext);
+
                 categories.Add(category);
             }
 

@@ -121,7 +121,7 @@ namespace TouchPortalSDK.Extensions.Attributes.Reflection
             foreach (var action in actions)
             {
                 var categoryContext = plugin.CategoryContexts
-                    .SingleOrDefault(category => category.CategoryAttribute.Name == action.attribute.Category);
+                    .SingleOrDefault(category => category.GetName() == action.attribute.Category);
                 
                 //TODO: How can I generate the Format without any Datas?
                 //TODO: And the datas needs a parent to generate the ID. One way is to have a reference to the PluginTree(Context?) in all of them.
@@ -164,7 +164,7 @@ namespace TouchPortalSDK.Extensions.Attributes.Reflection
             foreach (var state in states)
             {
                 var categoryContext = plugin.CategoryContexts
-                    .SingleOrDefault(category => category.CategoryAttribute.Name == state.attribute.Category);
+                    .SingleOrDefault(category => category.GetName() == state.attribute.Category);
                 
                 stateContexts.Add(new StateContext(categoryContext, state.attribute, state.property));
             }

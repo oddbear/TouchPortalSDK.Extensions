@@ -185,6 +185,7 @@ namespace TouchPortalSDK.Extensions.Attributes.Reflection
                     continue;
 
                 var data = new Dictionary<string, object>();
+
                 data["id"] = dataContext.GetId();
                 data["label"] = dataContext.GetLabel();
                 //"type": "text",
@@ -205,9 +206,26 @@ namespace TouchPortalSDK.Extensions.Attributes.Reflection
                 if (stateContext.CategoryContext != categoryContext)
                     continue;
 
+                var attribute = stateContext.StateAttribute;
+
                 var state = new Dictionary<string, object>();
+
+                //Required:
                 state["id"] = stateContext.GetId();
-                state["name"] = stateContext.GetDescription();
+
+                //Required:
+                state["type"] = attribute.Type;
+
+                //Required:
+                state["desc"] = stateContext.GetDescription();
+
+                //Required:
+                state["default"] = attribute.Default;
+
+                //Optional:
+                if (attribute.ValueChoices.Any())
+                    state["valueChoices"] = attribute.ValueChoices;
+
                 states.Add(state);
             }
 
@@ -226,7 +244,7 @@ namespace TouchPortalSDK.Extensions.Attributes.Reflection
 
                 var @event = new Dictionary<string, object>();
                 @event["id"] = eventContext.GetId();
-                @event["desc"] = eventContext.GetName();
+                @event["name"] = eventContext.GetName();
                 @event["valueStateId"] = eventContext.GetValueStateId();
                 events.Add(@event);
             }

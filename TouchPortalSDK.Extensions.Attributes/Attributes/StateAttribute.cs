@@ -13,7 +13,7 @@ namespace TouchPortalSDK.Extensions.Attributes.Attributes
         public string Default { get; }
         public string[] ValueChoices { get; }
 
-        public StateAttribute(string category,
+        public StateAttribute(string category = null,
                               string id = null,
                               string type = null,
                               string desc = null,
@@ -23,9 +23,9 @@ namespace TouchPortalSDK.Extensions.Attributes.Attributes
             Category = category;
 
             Id = id;
-            Type = type; //choice, text in format: #FF115599 or base64 image.
+            Type = type ?? "choice"; //choice, text in format: #FF115599 or base64 image.
             Desc = desc;
-            Default = @default;
+            Default = @default ?? string.Empty;
             ValueChoices = valueChoices ?? Array.Empty<string>();
         }
     }

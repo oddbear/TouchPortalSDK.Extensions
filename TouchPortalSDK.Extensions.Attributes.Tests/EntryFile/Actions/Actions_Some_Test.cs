@@ -3,18 +3,31 @@ using NUnit.Framework;
 using TouchPortalSDK.Extensions.Attributes.Attributes;
 using TouchPortalSDK.Extensions.Attributes.Reflection;
 using TouchPortalSDK.Extensions.Attributes.Reflection.Contexts;
+using CategoryAttribute = TouchPortalSDK.Extensions.Attributes.Attributes.CategoryAttribute;
 
 namespace TouchPortalSDK.Extensions.Attributes.Tests.EntryFile.Actions
 {
     [Plugin]
-    public class States_None_Test
+    public class Actions_Some_Test
     {
         private PluginContext _pluginContext;
         private string _pluginId;
         private Dictionary<string, object> _category;
         private Dictionary<string, object> _action;
 
-        [Action]
+        public enum Categories { [Category(id: "category")] Category1 }
+
+        [Action(category: "category",
+            id: "actionId",
+            name: "Action Name",
+            prefix: "Prefix",
+            type: "execute",
+            executionType: "Bash",
+            executionCmd: "Execution Cmd",
+            description: "Description",
+            tryInline:true,
+            format:"Format",
+            hasHoldFunctionality:true)]
         public void Action()
         {
             //
@@ -36,63 +49,61 @@ namespace TouchPortalSDK.Extensions.Attributes.Tests.EntryFile.Actions
         [Test]
         public void Action_Id_Empty_Test()
         {
-            Assert.AreEqual(_pluginId + ".DefaultCategory.action." + nameof(Action), _action["id"]);
+            Assert.AreEqual("actionId", _action["id"]);
         }
 
         [Test]
         public void Action_Name_Empty_Test()
         {
-            Assert.AreEqual(nameof(Action), _action["name"]);
+            Assert.AreEqual("Action Name", _action["name"]);
         }
 
         [Test]
         public void Action_Prefix_Empty_Test()
         {
-            Assert.AreEqual(string.Empty, _action["prefix"]);
+            Assert.AreEqual("Prefix", _action["prefix"]);
         }
 
         [Test]
         public void Action_Type_Empty_Test()
         {
-            Assert.AreEqual("communicate", _action["type"]);
+            Assert.AreEqual("execute", _action["type"]);
         }
         
         [Test]
         public void Action_ExecutionType_Set_Test()
         {
-            Assert.Throws<KeyNotFoundException>(() => _ = _action["executionType"]);
+            Assert.AreEqual("Bash", _action["executionType"]);
         }
 
         [Test]
         public void Action_ExecutionCmd_Set_Test()
         {
-            Assert.Throws<KeyNotFoundException>(() => _ = _action["execution_cmd"]);
+            Assert.AreEqual("Execution Cmd", _action["execution_cmd"]);
         }
 
         [Test]
         public void Action_Description_Set_Test()
         {
-            //TODO: This rule might change to generate a default in the future:
-            Assert.Throws<KeyNotFoundException>(() => _ = _action["description"]);
+            Assert.AreEqual("Description", _action["description"]);
         }
 
         [Test]
         public void Action_Format_Set_Test()
         {
-            //TODO: This rule might change to generate a default in the future:
-            Assert.Throws<KeyNotFoundException>(() => _ = _action["format"]);
+            Assert.AreEqual("Format", _action["format"]);
         }
 
         [Test]
         public void Action_TryInline_Empty_Test()
         {
-            Assert.AreEqual(false, _action["tryInline"]);
+            Assert.AreEqual(true, _action["tryInline"]);
         }
 
         [Test]
         public void Action_HasHoldFunctionality_Empty_Test()
         {
-            Assert.AreEqual(false, _action["hasHoldFunctionality"]);
+            Assert.AreEqual(true, _action["hasHoldFunctionality"]);
         }
     }
 }

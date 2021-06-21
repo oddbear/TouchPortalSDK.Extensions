@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using NUnit.Framework;
-using TouchPortalSDK.Extensions.Reflection;
+using TouchPortalSDK.Extensions.Attributes;
 using TouchPortalSDK.Extensions.Reflection.Contexts;
 
-namespace TouchPortalSDK.Extensions.Attributes.Tests.EntryFile.Data.Choice
+namespace TouchPortalSDK.Extensions.Reflection.Tests.EntryFile.Data.Choice
 {
     [Plugin]
     public class Data_Choice_Some_Test
@@ -15,7 +15,7 @@ namespace TouchPortalSDK.Extensions.Attributes.Tests.EntryFile.Data.Choice
         private Dictionary<string, object> _data;
 
         [Action]
-        public void Action([Attributes.Data.Choice(id: "dataId", label: "Data Label")]string value)
+        public void Action([Attributes.Data.Choice(id: "dataId", label: "Data Label", @default:"dummy", valueChoices:new []{"test"})]string value)
         {
             //
         }
@@ -36,25 +36,34 @@ namespace TouchPortalSDK.Extensions.Attributes.Tests.EntryFile.Data.Choice
         }
 
         [Test]
-        public void Data_Id_Empty_Test()
+        public void Data_Id_Set_Test()
         {
             Assert.AreEqual("dataId", _data["id"]);
         }
 
         [Test]
-        public void Data_Type_Empty_Test()
+        public void Data_Type_Set_Test()
         {
             Assert.AreEqual("choice", _data["type"]);
         }
 
         [Test]
-        public void Data_Label_Empty_Test()
+        public void Data_Label_Set_Test()
         {
             Assert.AreEqual("Data Label", _data["label"]);
         }
+        
+        [Test]
+        public void Data_Default_Set_Test()
+        {
+            Assert.AreEqual("dummy", _data["default"]);
+        }
 
-        //default
-        //valueChoices
+        [Test]
+        public void Data_ValueChoices_Set_Test()
+        {
+            Assert.AreEqual(new [] { "test" }, _data["valueChoices"]);
+        }
 
         [Test]
         public void Data_Extensions_Empty_Test()

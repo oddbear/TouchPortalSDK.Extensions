@@ -1,13 +1,12 @@
-using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using TouchPortalSDK.Extensions.Attributes;
 using TouchPortalSDK.Extensions.Reflection.Contexts;
 
-namespace TouchPortalSDK.Extensions.Reflection.Tests.EntryFile.Data.Choice
+namespace TouchPortalSDK.Extensions.Reflection.Tests.EntryFile.Data.Number
 {
     [Plugin]
-    public class Data_Choice_None_Test
+    public class Data_Number_Some_Test
     {
         private PluginContext _pluginContext;
         private string _pluginId;
@@ -16,7 +15,7 @@ namespace TouchPortalSDK.Extensions.Reflection.Tests.EntryFile.Data.Choice
         private Dictionary<string, object> _data;
 
         [Action]
-        public void Action([Attributes.Data.Choice]string value)
+        public void Action([Attributes.Data.Number(id: "dataId", label: "Data Label",  @default: 13.37, allowDecimals: false, minValue: 10, maxValue: 20)]string value)
         {
             //
         }
@@ -39,31 +38,31 @@ namespace TouchPortalSDK.Extensions.Reflection.Tests.EntryFile.Data.Choice
         [Test]
         public void Data_Id_Empty_Test()
         {
-            Assert.AreEqual(_pluginId + ".DefaultCategory.action." + nameof(Action) + ".data.value", _data["id"]);
+            Assert.AreEqual("dataId", _data["id"]);
         }
 
         [Test]
         public void Data_Type_Empty_Test()
         {
-            Assert.AreEqual("choice", _data["type"]);
+            Assert.AreEqual("number", _data["type"]);
         }
 
         [Test]
         public void Data_Label_Empty_Test()
         {
-            Assert.AreEqual("value", _data["label"]);
+            Assert.AreEqual("Data Label", _data["label"]);
         }
-        
+
         [Test]
-        public void Data_Default_Empty_Test()
+        public void Data_Default_Set_Test()
         {
-            Assert.AreEqual(string.Empty, _data["default"]);
+            Assert.AreEqual(13.37, _data["default"]);
         }
 
         [Test]
         public void Data_ValueChoices_Empty_Test()
         {
-            Assert.AreEqual(Array.Empty<string>(), _data["valueChoices"]);
+            Assert.Throws<KeyNotFoundException>(() => _ = _data["valueChoices"]);
         }
 
         [Test]
@@ -75,19 +74,19 @@ namespace TouchPortalSDK.Extensions.Reflection.Tests.EntryFile.Data.Choice
         [Test]
         public void Data_AllowDecimals_Empty_Test()
         {
-            Assert.Throws<KeyNotFoundException>(() => _ = _data["allowDecimals"]);
+            Assert.AreEqual(false, _data["allowDecimals"]);
         }
 
         [Test]
         public void Data_MinValue_Empty_Test()
         {
-            Assert.Throws<KeyNotFoundException>(() => _ = _data["minValue"]);
+            Assert.AreEqual(10, _data["minValue"]);
         }
 
         [Test]
         public void Data_MaxValue_Empty_Test()
         {
-            Assert.Throws<KeyNotFoundException>(() => _ = _data["maxValue"]);
+            Assert.AreEqual(20, _data["maxValue"]);
         }
     }
 }

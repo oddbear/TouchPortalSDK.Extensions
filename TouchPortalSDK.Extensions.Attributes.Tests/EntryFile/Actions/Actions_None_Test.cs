@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using NUnit.Framework;
-using TouchPortalSDK.Extensions.Reflection;
+using TouchPortalSDK.Extensions.Attributes;
 using TouchPortalSDK.Extensions.Reflection.Contexts;
 
-namespace TouchPortalSDK.Extensions.Attributes.Tests.EntryFile.Actions
+namespace TouchPortalSDK.Extensions.Reflection.Tests.EntryFile.Actions
 {
     [Plugin]
     public class Actions_None_Test

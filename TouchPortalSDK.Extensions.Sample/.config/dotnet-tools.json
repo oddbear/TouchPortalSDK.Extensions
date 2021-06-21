@@ -3,7 +3,7 @@
   "isRoot": true,
   "tools": {
     "TouchPortalSDK.Extensions.Tool": {
-      "version": "0.1.0-build-20210621-1941",
+      "version": "0.1.0-build-20210621-2011",
       "commands": [
         "TouchPortalSDK"
       ]

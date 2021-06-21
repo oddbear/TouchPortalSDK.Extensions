@@ -1,11 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
-using TouchPortalSDK.Extensions.Reflection;
+using TouchPortalSDK.Extensions.Attributes;
 using TouchPortalSDK.Extensions.Reflection.Contexts;
 using CategoryAttribute = TouchPortalSDK.Extensions.Attributes.CategoryAttribute;
 
-namespace TouchPortalSDK.Extensions.Attributes.Tests.EntryFile.States
+namespace TouchPortalSDK.Extensions.Reflection.Tests.EntryFile.States
 {
     [Plugin]
     public class States_Some_Test

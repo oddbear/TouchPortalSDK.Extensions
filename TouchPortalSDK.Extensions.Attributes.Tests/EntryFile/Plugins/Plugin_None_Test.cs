@@ -1,8 +1,8 @@
 using NUnit.Framework;
-using TouchPortalSDK.Extensions.Reflection;
+using TouchPortalSDK.Extensions.Attributes;
 using TouchPortalSDK.Extensions.Reflection.Contexts;
 
-namespace TouchPortalSDK.Extensions.Attributes.Tests.EntryFile.Plugins
+namespace TouchPortalSDK.Extensions.Reflection.Tests.EntryFile.Plugins
 {
     public class Plugin_None_Test
     {

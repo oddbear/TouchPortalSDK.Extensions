@@ -198,30 +198,42 @@ namespace TouchPortalSDK.Extensions.Reflection
                 data["label"] = dataContext.GetLabel();
 
                 //Required:
-                //data["default"] =
+                data["default"] = attribute.Default;
 
-                if (attribute is Data.ChoiceAttribute choice) //TODO: Is this correct? It's required.
+                if (attribute is Data.ChoiceAttribute choice)
                 {
-                    //Required:
+                    //Required (if choice):
                     data["valueChoices"] = choice.ValueChoices;
                 }
 
                 if (attribute is Data.FileAttribute file)
                 {
                     //Optional:
-                    //data["extensions"] =
+                    if (file.Extensions.Any())
+                    {
+                        data["extensions"] = file.Extensions;
+                    }
                 }
 
                 if (attribute is Data.NumberAttribute number)
                 {
                     //Optional:
-                    //data["allowDecimals"] =
+                    if (number.AllowDecimals != null)
+                    {
+                        data["allowDecimals"] = number.AllowDecimals;
+                    }
 
                     //Optional:
-                    //data["minValue"] =
+                    if (number.MinValue != null)
+                    {
+                        data["minValue"] = number.MinValue;
+                    }
 
                     //Optional:
-                    //data["maxValue"] =
+                    if (number.MaxValue != null)
+                    {
+                        data["maxValue"] = number.MaxValue;
+                    }
                 }
 
                 datas.Add(data);

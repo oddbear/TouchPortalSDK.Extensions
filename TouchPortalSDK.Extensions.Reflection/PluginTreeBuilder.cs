@@ -156,7 +156,8 @@ namespace TouchPortalSDK.Extensions.Reflection
                     tuple.parameter,
                     tuple.method
                 })
-                .Where(action => action.attribute != null);
+                .Where(action => action.attribute != null)
+                .ToArray();
 
             foreach (var data in datas)
             {

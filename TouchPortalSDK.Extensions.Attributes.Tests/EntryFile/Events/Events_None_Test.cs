@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using TouchPortalSDK.Extensions.Reflection;
+using TouchPortalSDK.Extensions.Attributes;
 using TouchPortalSDK.Extensions.Reflection.Contexts;
 
-namespace TouchPortalSDK.Extensions.Attributes.Tests.EntryFile.Events
+namespace TouchPortalSDK.Extensions.Reflection.Tests.EntryFile.Events
 {
     [Plugin]
     public class Events_None_Test

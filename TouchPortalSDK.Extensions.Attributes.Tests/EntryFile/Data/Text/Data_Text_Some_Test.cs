@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using NUnit.Framework;
-using TouchPortalSDK.Extensions.Reflection;
+using TouchPortalSDK.Extensions.Attributes;
 using TouchPortalSDK.Extensions.Reflection.Contexts;
 
-namespace TouchPortalSDK.Extensions.Attributes.Tests.EntryFile.Data.Text
+namespace TouchPortalSDK.Extensions.Reflection.Tests.EntryFile.Data.Text
 {
     [Plugin]
     public class Data_Text_Some_Test
@@ -15,7 +15,7 @@ namespace TouchPortalSDK.Extensions.Attributes.Tests.EntryFile.Data.Text
         private Dictionary<string, object> _data;
 
         [Action]
-        public void Action([Attributes.Data.Text(id: "dataId", label: "Data Label")]string value)
+        public void Action([Attributes.Data.Text(id: "dataId", label: "Data Label",  @default: "string")]string value)
         {
             //
         }
@@ -53,8 +53,17 @@ namespace TouchPortalSDK.Extensions.Attributes.Tests.EntryFile.Data.Text
             Assert.AreEqual("Data Label", _data["label"]);
         }
 
-        //default
-        //valueChoices
+        [Test]
+        public void Data_Default_Set_Test()
+        {
+            Assert.AreEqual("string", _data["default"]);
+        }
+
+        [Test]
+        public void Data_ValueChoices_Empty_Test()
+        {
+            Assert.Throws<KeyNotFoundException>(() => _ = _data["valueChoices"]);
+        }
 
         [Test]
         public void Data_Extensions_Empty_Test()

@@ -19,7 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Attributes", "Attributes", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{D5417CEF-A3A2-4117-B76D-0516EEBC1BEE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TouchPortalSDK.Extensions.Attributes.Tests", "TouchPortalSDK.Extensions.Attributes.Tests\TouchPortalSDK.Extensions.Attributes.Tests.csproj", "{8B5DD461-ED6C-44D8-8A9E-1F5E63EC2A0C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TouchPortalSDK.Extensions.Reflection.Tests", "TouchPortalSDK.Extensions.Attributes.Tests\TouchPortalSDK.Extensions.Reflection.Tests.csproj", "{8B5DD461-ED6C-44D8-8A9E-1F5E63EC2A0C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TouchPortalSDK.Extensions.Reflection", "TouchPortalSDK.Extensions.Reflection\TouchPortalSDK.Extensions.Reflection.csproj", "{BACCD6A6-8692-4882-A188-2E52F6627540}"
 EndProject

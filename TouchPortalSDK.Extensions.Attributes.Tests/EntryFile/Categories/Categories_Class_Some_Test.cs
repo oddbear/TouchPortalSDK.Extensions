@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using NUnit.Framework;
-using TouchPortalSDK.Extensions.Reflection;
+using TouchPortalSDK.Extensions.Attributes;
 using TouchPortalSDK.Extensions.Reflection.Contexts;
 using CategoryAttribute = TouchPortalSDK.Extensions.Attributes.CategoryAttribute;
 
-namespace TouchPortalSDK.Extensions.Attributes.Tests.EntryFile.Categories
+namespace TouchPortalSDK.Extensions.Reflection.Tests.EntryFile.Categories
 {
     [Plugin]
     [Category(id: "categoryId", name: "Category Name", imagePath: "imagePath")]

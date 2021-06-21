@@ -54,22 +54,40 @@ namespace TouchPortalSDK.Extensions.Reflection
                 setting["name"] = settingContext.GetName();
 
                 //Optional:
-                //setting["default"] = 
+                if (attribute.Default != null)
+                {
+                    setting["default"] = attribute.Default;
+                }
 
                 //Required:
                 setting["type"] = settingContext.GetSettingType();
 
-                //Optional:
-                //setting["maxLenght"] = // <- Is this typo thing fixed?
+                if (attribute is Setting.TextAttribute text)
+                {
+                    //Optional:
+                    if (text.MaxLength != null)
+                    {
+                        setting["maxLenght"] = text.MaxLength; //TODO: Is this typo fixed, or is it permanent (still in the documentation).
+                    }
+                }
 
                 //Optional:
                 setting["isPassword"] = attribute.IsPassword;
 
-                //Optional:
-                //setting["minValue"] = 
+                if (attribute is Setting.NumberAttribute number)
+                {
+                    if (number.MinValue != null)
+                    {
+                        //Optional:
+                        setting["minValue"] = number.MinValue;
+                    }
 
-                //Optional:
-                //setting["maxValue"] = 
+                    if (number.MaxValue != null)
+                    {
+                        //Optional:
+                        setting["maxValue"] = number.MaxValue;
+                    }
+                }
 
                 //Optional:
                 setting["readOnly"] = attribute.ReadOnly;

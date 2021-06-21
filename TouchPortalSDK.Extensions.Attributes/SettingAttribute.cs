@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace TouchPortalSDK.Extensions.Attributes
 {
@@ -8,17 +9,15 @@ namespace TouchPortalSDK.Extensions.Attributes
         {
             public string Name { get; }
             public string Type { get; }
-            public string Default { get; protected set; }
-            public int? MaxLength { get; protected set; }
+            public string Default { get; }
             public bool IsPassword { get; }
-            public object MinValue { get; protected set; }
-            public object MaxValue { get; protected set; }
             public bool ReadOnly { get; }
 
-            protected SettingAttribute(string name, string type, bool isPassword, bool readOnly)
+            protected SettingAttribute(string name, string type, string @default, bool isPassword, bool readOnly)
             {
                 Name = name;
                 Type = type;
+                Default = @default;
                 IsPassword = isPassword;
                 ReadOnly = readOnly;
             }
@@ -27,16 +26,16 @@ namespace TouchPortalSDK.Extensions.Attributes
         [AttributeUsage(AttributeTargets.Property)]
         public class TextAttribute : SettingAttribute
         {
+            public int? MaxLength { get; }
+
             public TextAttribute(string name = null,
                                  string @default = null,
                                  string type = null,
                                  int maxLength = int.MinValue,
                                  bool isPassword = false,
                                  bool readOnly = false)
-                : base(name, type, isPassword, readOnly)
+                : base(name, type, @default, isPassword, readOnly)
             {
-                Default = @default;
-
                 if (maxLength > 0)
                     MaxLength = maxLength;
             }
@@ -45,23 +44,30 @@ namespace TouchPortalSDK.Extensions.Attributes
         [AttributeUsage(AttributeTargets.Property)]
         public class NumberAttribute : SettingAttribute
         {
+            public double? MinValue { get; }
+            public double? MaxValue { get; }
+
             public NumberAttribute(string name = null,
-                                   double @default = 0,
+                                   double @default = double.NaN,
                                    string type = null,
                                    bool isPassword = false,
-                                   double minValue = double.NegativeInfinity,
-                                   double maxValue = double.PositiveInfinity,
+                                   double minValue = double.NaN,
+                                   double maxValue = double.NaN,
                                    bool readOnly = false)
-                : base(name, type, isPassword, readOnly)
+                : base(name, type, DoubleToString(@default), isPassword, readOnly)
             {
-                if (@default > 0)
-                    Default = @default.ToString(); //TODO: Find the correct culture settings for Touch Portal.
-
-                if (minValue > double.NegativeInfinity)
+                if (!double.IsNaN(minValue))
                     MinValue = minValue;
 
-                if (maxValue < double.PositiveInfinity)
+                if (!double.IsNaN(maxValue))
                     MaxValue = maxValue;
+            }
+
+            private static string DoubleToString(double value)
+            {
+                return double.IsNaN(value)
+                    ? null
+                    : value.ToString(CultureInfo.InvariantCulture);
             }
         }
     }

@@ -7,7 +7,7 @@ using TouchPortalSDK.Extensions.Attributes.Reflection.Contexts;
 namespace TouchPortalSDK.Extensions.Attributes.Tests.EntryFile.Actions
 {
     [Plugin]
-    public class States_None_Test
+    public class Actions_None_Test
     {
         private PluginContext _pluginContext;
         private string _pluginId;

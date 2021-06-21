@@ -23,7 +23,7 @@ namespace TouchPortalSDK.Extensions.Attributes.Attributes
         {
             Id = id;
             Name = name;
-            Format = format;
+            Format = format ?? "$val";
             Type = type ?? "communicate";
             ValueChoices = valueChoices ?? Array.Empty<string>();
             ValueType = valueType ?? "choice";

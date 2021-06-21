@@ -8,11 +8,13 @@ namespace TouchPortalSDK.Extensions.Attributes.Attributes
         public abstract class DataAttribute : Attribute
         {
             public string Id { get; }
+            public string Type { get; }
             public string Label { get; }
 
-            protected DataAttribute(string id, string label)
+            protected DataAttribute(string id, string type, string label)
             {
                 Id = id;
+                Type = type;
                 Label = label;
             }
         }
@@ -22,7 +24,7 @@ namespace TouchPortalSDK.Extensions.Attributes.Attributes
         {
             public TextAttribute(string id = null,
                                  string label = null)
-                : base(id, label)
+                : base(id, "text", label)
             {
                 //
             }
@@ -31,10 +33,12 @@ namespace TouchPortalSDK.Extensions.Attributes.Attributes
         [AttributeUsage(AttributeTargets.Parameter)]
         public class ChoiceAttribute : DataAttribute
         {
-            public ChoiceAttribute(string id = null, string label = null)
-                : base(id, label)
+            public string[] ValueChoices { get; set; }
+
+            public ChoiceAttribute(string id = null, string label = null, string[] valueChoices = null)
+                : base(id, "choice", label)
             {
-                //
+                ValueChoices = valueChoices ?? Array.Empty<string>();
             }
         }
 
@@ -43,7 +47,7 @@ namespace TouchPortalSDK.Extensions.Attributes.Attributes
         {
             public FolderAttribute(string id = null,
                                    string label = null)
-                : base(id, label)
+                : base(id, "folder", label)
             {
                 //
             }
@@ -57,7 +61,7 @@ namespace TouchPortalSDK.Extensions.Attributes.Attributes
             public FileAttribute(string id = null,
                                  string label = null,
                                  string[] extensions = null)
-                : base(id, label)
+                : base(id, "file", label)
             {
                 Extensions = extensions;
             }
@@ -75,12 +79,34 @@ namespace TouchPortalSDK.Extensions.Attributes.Attributes
                                    bool allowDecimals = true,
                                    object minValue = null,
                                    object maxValue = null)
-                : base(id, label)
+                : base(id, "number", label)
             {
                 //TODO: Verifications of min and max.
                 AllowDecimals = allowDecimals;
                 MinValue = minValue;
                 MaxValue = maxValue;
+            }
+        }
+
+        [AttributeUsage(AttributeTargets.Parameter)]
+        public class SwitchAttribute : DataAttribute
+        {
+            public SwitchAttribute(string id = null,
+                string label = null)
+                : base(id, "switch", label)
+            {
+                //
+            }
+        }
+
+        [AttributeUsage(AttributeTargets.Parameter)]
+        public class ColorAttribute : DataAttribute
+        {
+            public ColorAttribute(string id = null,
+                string label = null)
+                : base(id, "color", label)
+            {
+                //
             }
         }
     }

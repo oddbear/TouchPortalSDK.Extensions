@@ -21,7 +21,7 @@ namespace TouchPortalSDK.Extensions.Attributes.Reflection.Contexts
         public string GetId()
             => !string.IsNullOrWhiteSpace(DataAttribute.Id)
                 ? DataAttribute.Id
-                : $"{ActionContext.GetId()}.{ParameterInfo.Name}";
+                : $"{ActionContext.GetId()}.data.{ParameterInfo.Name}";
 
         public string GetLabel()
             => !string.IsNullOrWhiteSpace(DataAttribute.Label)

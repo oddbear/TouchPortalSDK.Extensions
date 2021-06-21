@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using TouchPortalSDK.Extensions.Attributes.Attributes;
 using TouchPortalSDK.Extensions.Attributes.Reflection.Contexts;
 
 namespace TouchPortalSDK.Extensions.Attributes.Reflection
@@ -184,13 +185,45 @@ namespace TouchPortalSDK.Extensions.Attributes.Reflection
                 if (dataContext.ActionContext != actionContext)
                     continue;
 
+                var attribute = dataContext.DataAttribute;
+
                 var data = new Dictionary<string, object>();
 
+                //Required:
                 data["id"] = dataContext.GetId();
+
+                //Required:
+                data["type"] = attribute.Type;
+
+                //Required:
                 data["label"] = dataContext.GetLabel();
-                //"type": "text",
-                //"default": ""
-                //"valueChoices": ["1", "2", "3"]
+
+                //Required:
+                //data["default"] =
+
+                if (attribute is Data.ChoiceAttribute choice) //TODO: Is this correct? It's required.
+                {
+                    //Required:
+                    data["valueChoices"] = choice.ValueChoices;
+                }
+
+                if (attribute is Data.FileAttribute file)
+                {
+                    //Optional:
+                    //data["extensions"] =
+                }
+
+                if (attribute is Data.NumberAttribute number)
+                {
+                    //Optional:
+                    //data["allowDecimals"] =
+
+                    //Optional:
+                    //data["minValue"] =
+
+                    //Optional:
+                    //data["maxValue"] =
+                }
 
                 datas.Add(data);
             }
@@ -242,10 +275,31 @@ namespace TouchPortalSDK.Extensions.Attributes.Reflection
                 if (eventContext.StateContext.CategoryContext != categoryContext)
                     continue;
 
+                var attribute = eventContext.EventAttribute;
+
                 var @event = new Dictionary<string, object>();
+
+                //Required:
                 @event["id"] = eventContext.GetId();
+
+                //Required:
                 @event["name"] = eventContext.GetName();
+
+                //Required:
+                @event["format"] = attribute.Format;
+
+                //Required:
+                @event["type"] = attribute.Type;
+
+                //Required:
+                @event["valueChoices"] = attribute.ValueChoices;
+
+                //Required:
+                @event["valueType"] = attribute.ValueType;
+
+                //Required:
                 @event["valueStateId"] = eventContext.GetValueStateId();
+
                 events.Add(@event);
             }
 

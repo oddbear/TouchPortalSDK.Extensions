@@ -1,10 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
-using TouchPortalSDK.Extensions.Attributes.Attributes;
-using TouchPortalSDK.Extensions.Attributes.Reflection;
-using TouchPortalSDK.Extensions.Attributes.Reflection.Contexts;
-using CategoryAttribute = TouchPortalSDK.Extensions.Attributes.Attributes.CategoryAttribute;
+using TouchPortalSDK.Extensions.Reflection;
+using TouchPortalSDK.Extensions.Reflection.Contexts;
+using CategoryAttribute = TouchPortalSDK.Extensions.Attributes.CategoryAttribute;
 
 namespace TouchPortalSDK.Extensions.Attributes.Tests.EntryFile.States
 {

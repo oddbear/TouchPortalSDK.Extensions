@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using TouchPortalSDK.Extensions.Attributes.Attributes;
+using TouchPortalSDK.Extensions.Attributes;
 
 namespace TouchPortalSDK.Extensions.Sample
 {

@@ -20,6 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TouchPortalSDK.Extensions.Attributes\TouchPortalSDK.Extensions.Attributes.csproj" />
+    <ProjectReference Include="..\TouchPortalSDK.Extensions.Reflection\TouchPortalSDK.Extensions.Reflection.csproj" />
   </ItemGroup>
 </Project>

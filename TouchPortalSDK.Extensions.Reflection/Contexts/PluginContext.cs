@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using TouchPortalSDK.Extensions.Attributes.Attributes;
+using TouchPortalSDK.Extensions.Attributes;
 
-namespace TouchPortalSDK.Extensions.Attributes.Reflection.Contexts
+namespace TouchPortalSDK.Extensions.Reflection.Contexts
 {
     public class PluginContext
     {

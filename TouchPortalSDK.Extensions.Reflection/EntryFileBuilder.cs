@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using TouchPortalSDK.Extensions.Attributes.Attributes;
-using TouchPortalSDK.Extensions.Attributes.Reflection.Contexts;
+using TouchPortalSDK.Extensions.Attributes;
+using TouchPortalSDK.Extensions.Reflection.Contexts;
 
-namespace TouchPortalSDK.Extensions.Attributes.Reflection
+namespace TouchPortalSDK.Extensions.Reflection
 {
     public static class EntryFileBuilder
     {

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.Extensions.Logging;
-using TouchPortalSDK.Extensions.Attributes.Reflection.Contexts;
+using TouchPortalSDK.Extensions.Reflection.Contexts;
 
-namespace TouchPortalSDK.Extensions.Attributes.Reflection
+namespace TouchPortalSDK.Extensions.Reflection
 {
     public class PluginTreeVerifier
     {

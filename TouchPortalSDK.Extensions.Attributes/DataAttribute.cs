@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TouchPortalSDK.Extensions.Attributes.Attributes
+namespace TouchPortalSDK.Extensions.Attributes
 {
     public static class Data
     {

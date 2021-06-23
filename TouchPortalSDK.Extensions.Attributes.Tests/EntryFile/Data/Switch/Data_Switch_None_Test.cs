@@ -36,6 +36,13 @@ namespace TouchPortalSDK.Extensions.Reflection.Tests.EntryFile.Data.Switch
         }
 
         [Test]
+        public void Action_Format_Set_Test()
+        {
+            var dataId = _pluginId + ".DefaultCategory.action." + nameof(Action) + ".data.value";
+            Assert.AreEqual($"{{${dataId}$}}", _action["format"]);
+        }
+
+        [Test]
         public void Data_Id_Empty_Test()
         {
             Assert.AreEqual(_pluginId + ".DefaultCategory.action." + nameof(Action) + ".data.value", _data["id"]);

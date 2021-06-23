@@ -58,11 +58,10 @@ namespace TouchPortalSDK.Extensions.Reflection
             //Order matter:
             SetSettings(settingContexts, pluginContext);
             SetCategories(categoryContexts, pluginContext);
-            SetActions(actionContexts, pluginContext);
-            SetDatas(dataContexts, pluginContext);
-            //TODO: Set default action format.
-            SetStates(stateContexts, pluginContext);
-            SetEvents(eventContexts, pluginContext);
+            SetActions(actionContexts, pluginContext);      //Dependent on categories
+            SetDatas(dataContexts, pluginContext);          //Dependent on categories and actions
+            SetStates(stateContexts, pluginContext);        //Dependent on categories
+            SetEvents(eventContexts, pluginContext);        //Dependent on categories and states
 
             return pluginContext;
         }
@@ -139,9 +138,18 @@ namespace TouchPortalSDK.Extensions.Reflection
 
                 if (categoryContext is null && plugin.CategoryContexts.Count == 1)
                     categoryContext = plugin.CategoryContexts.Single();
+
+                //Adds Default format if missing:
+                if (action.attribute.Format is null)
+                {
+                    var parameterNames = action.method
+                        .GetParameters()
+                        .Where(parameter => parameter.GetCustomAttribute<Data.DataAttribute>() != null)
+                        .Select(parameterInfo => $"{{{parameterInfo.Name}}}");
+
+                    action.attribute.Format = string.Join(" ", parameterNames);
+                }
                 
-                //TODO: How can I generate the Format without any Datas?
-                //TODO: And the datas needs a parent to generate the ID. One way is to have a reference to the PluginTree(Context?) in all of them.
                 actionContexts.Add(new ActionContext(categoryContext, action.attribute, action.method));
             }
         }
@@ -169,11 +177,9 @@ namespace TouchPortalSDK.Extensions.Reflection
 
                 if (actionContext?.ActionAttribute?.Format != null)
                 {
-                    //TODO: Implement indexed versions:
-                    var placeHolder = data.parameter.Name;
                     actionContext.ActionAttribute.Format = actionContext.ActionAttribute.Format
                         .Replace($"{{{data.index}}}", $"{{${dataContext.GetId()}$}}")
-                        .Replace($"{{{placeHolder}}}", $"{{${dataContext.GetId()}$}}");
+                        .Replace($"{{{data.parameter.Name}}}", $"{{${dataContext.GetId()}$}}");
                 }
 
                 dataContexts.Add(dataContext);

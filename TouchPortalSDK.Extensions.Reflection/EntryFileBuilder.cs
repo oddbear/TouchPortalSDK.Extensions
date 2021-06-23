@@ -201,10 +201,7 @@ namespace TouchPortalSDK.Extensions.Reflection
                 if (!string.IsNullOrWhiteSpace(actionAttribute.Description))
                     actionObject["description"] = actionAttribute.Description;
 
-                //Optional:
-                //TODO: If it does not exist, it will only show the (Prefix|Name) both inlined or not.
-                //For now the rule should be to not include this if empty.
-                //In the future, generate a default if empty?
+                //Optional (if missing '(Prefix|Name)' will be the rendering):
                 if (!string.IsNullOrWhiteSpace(actionAttribute.Format))
                     actionObject["format"] = actionAttribute.Format;
 

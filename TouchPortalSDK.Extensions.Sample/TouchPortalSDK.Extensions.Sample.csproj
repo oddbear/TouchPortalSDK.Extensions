@@ -22,7 +22,7 @@
     <Exec Command="dotnet tool run TouchPortalSDK --entry -o $(OutDir) -a $(AssemblyName)" />
   </Target>
 
-  <Target Name="Copy_entry_File" AfterTargets="Build_Entry_File">
+  <Target Name="Copy_entry_File" AfterTargets="Build_Entry_File" Condition="$(InstallPlugin) == 'true' Or $(InstallPlugin) == 'force'">
     <Copy SourceFiles="$(ProjectDir)$(OutDir)entry.tp" DestinationFiles="$(AppData)\TouchPortal\plugins\TouchPortalSDK.Extensions.Sample\entry.tp" />
   </Target>
 

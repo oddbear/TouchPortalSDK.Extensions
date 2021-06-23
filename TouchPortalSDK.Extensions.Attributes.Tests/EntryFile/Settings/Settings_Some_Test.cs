@@ -8,10 +8,10 @@ namespace TouchPortalSDK.Extensions.Reflection.Tests.EntryFile.Settings
     [Plugin]
     public class Settings_Some_Test
     {
-        [Setting.Text(name:"name", @default: "default", type:"text", maxLength:5, isPassword:true, readOnly:true)]
+        [Attributes.Settings.Text(Name = "name", Default = "default", MaxLength = 5, IsPassword = true, ReadOnly = true)]
         public string TextSetting { get; set; }
 
-        [Setting.Number(name: "name", @default: 3, type: "number", isPassword: true, minValue: 0, maxValue: 5, readOnly: true)]
+        [Attributes.Settings.Number(Name = "name", Default = 3, IsPassword = true, MinValue = 1, MaxValue = 5, ReadOnly = true)]
         public int NumberSetting { get; set; }
         
         private PluginContext _pluginContext;
@@ -44,6 +44,13 @@ namespace TouchPortalSDK.Extensions.Reflection.Tests.EntryFile.Settings
         }
 
         [Test]
+        public void Setting_Default_Empty_Test()
+        {
+            Assert.AreEqual("default", _textSetting["default"]);
+            Assert.AreEqual("3", _numberSetting["default"]);
+        }
+
+        [Test]
         public void Setting_ReadOnly_Empty_Test()
         {
             Assert.AreEqual(true, _textSetting["readOnly"]);
@@ -55,6 +62,28 @@ namespace TouchPortalSDK.Extensions.Reflection.Tests.EntryFile.Settings
         {
             Assert.AreEqual(true, _textSetting["isPassword"]);
             Assert.AreEqual(true, _numberSetting["isPassword"]);
+        }
+
+        [Test]
+        public void Setting_MaxLength_Empty_Test()
+        {
+            Assert.AreEqual(5, _textSetting["maxLenght"]);
+            Assert.False(_numberSetting.ContainsKey("maxLenght"));
+            Assert.False(_numberSetting.ContainsKey("maxLength"));
+        }
+        
+        [Test]
+        public void Setting_MinValue_Empty_Test()
+        {
+            Assert.False(_textSetting.ContainsKey("minValue"));
+            Assert.AreEqual(1, _numberSetting["minValue"]);
+        }
+
+        [Test]
+        public void Setting_MaxValue_Empty_Test()
+        {
+            Assert.False(_textSetting.ContainsKey("maxValue"));
+            Assert.AreEqual(5, _numberSetting["maxValue"]);
         }
     }
 }

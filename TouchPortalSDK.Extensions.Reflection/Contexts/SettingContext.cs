@@ -6,10 +6,10 @@ namespace TouchPortalSDK.Extensions.Reflection.Contexts
     public class SettingContext
     {
         public PluginContext PluginContext { get; set; }
-        public Setting.SettingAttribute SettingAttribute { get; }
+        public Settings.SettingAttribute SettingAttribute { get; }
         public PropertyInfo PropertyInfo { get; }
 
-        public SettingContext(PluginContext pluginContext, Setting.SettingAttribute settingAttribute, PropertyInfo propertyInfo)
+        public SettingContext(PluginContext pluginContext, Settings.SettingAttribute settingAttribute, PropertyInfo propertyInfo)
         {
             PluginContext = pluginContext;
             SettingAttribute = settingAttribute;

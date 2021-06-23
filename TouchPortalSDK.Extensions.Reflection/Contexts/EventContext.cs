@@ -8,10 +8,10 @@ namespace TouchPortalSDK.Extensions.Reflection.Contexts
         public CategoryContext CategoryContext { get; }
         public StateContext StateContext { get; }
 
-        public EventAttribute EventAttribute { get; }
+        public Events.EventAttribute EventAttribute { get; }
         public PropertyInfo PropertyInfo { get; }
 
-        public EventContext(CategoryContext categoryContext, StateContext stateContext, EventAttribute eventAttribute, PropertyInfo propertyInfo)
+        public EventContext(CategoryContext categoryContext, StateContext stateContext, Events.EventAttribute eventAttribute, PropertyInfo propertyInfo)
         {
             CategoryContext = categoryContext;
             StateContext = stateContext;

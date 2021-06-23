@@ -74,7 +74,7 @@ namespace TouchPortalSDK.Extensions.Reflection
                 .GetProperties()
                 .Select(property => new
                 {
-                    attribute = property.GetCustomAttribute<Setting.SettingAttribute>(),
+                    attribute = property.GetCustomAttribute<Settings.SettingAttribute>(),
                     property
                 })
                 .Where(setting => setting.attribute != null)
@@ -127,7 +127,7 @@ namespace TouchPortalSDK.Extensions.Reflection
                 .GetMethods()
                 .Select(method => new
                 {
-                    attribute = method.GetCustomAttribute<ActionAttribute>(),
+                    attribute = method.GetCustomAttribute<Actions.ActionAttribute>(),
                     method
                 })
                 .Where(action => action.attribute != null);
@@ -174,7 +174,7 @@ namespace TouchPortalSDK.Extensions.Reflection
                 .GetProperties()
                 .Select(property => new
                 {
-                    attribute = property.GetCustomAttribute<StateAttribute>(),
+                    attribute = property.GetCustomAttribute<States.StateAttribute>(),
                     property
                 })
                 .Where(state => state.attribute != null);
@@ -197,7 +197,7 @@ namespace TouchPortalSDK.Extensions.Reflection
                 .GetProperties()
                 .Select(property => new
                 {
-                    attribute = property.GetCustomAttribute<EventAttribute>(),
+                    attribute = property.GetCustomAttribute<Events.EventAttribute>(),
                     property
                 })
                 .Where(@event => @event.attribute != null);

@@ -7,10 +7,10 @@ namespace TouchPortalSDK.Extensions.Reflection.Contexts
     {
         public CategoryContext CategoryContext { get; }
 
-        public ActionAttribute ActionAttribute { get; }
+        public Actions.ActionAttribute ActionAttribute { get; }
         public MethodInfo MethodInfo { get; }
 
-        public ActionContext(CategoryContext categoryContext, ActionAttribute actionAttribute, MethodInfo methodInfo)
+        public ActionContext(CategoryContext categoryContext, Actions.ActionAttribute actionAttribute, MethodInfo methodInfo)
         {
             CategoryContext = categoryContext;
             ActionAttribute = actionAttribute;

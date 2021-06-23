@@ -11,7 +11,7 @@ namespace TouchPortalSDK.Extensions.Reflection.Tests.EntryFile.Categories
     {
         public enum Categories
         {
-            [Category(id: "categoryId", name: "Category Name", imagePath: "imagePath")]
+            [Category(Id = "categoryId", Name = "Category Name", ImagePath = "imagePath")]
             Category1
         }
 

@@ -8,10 +8,10 @@ namespace TouchPortalSDK.Extensions.Reflection.Tests.EntryFile.Settings
     [Plugin]
     public class Settings_None_Test
     {
-        [Setting.Text]
+        [Attributes.Settings.Text]
         public string TextSetting { get; set; }
 
-        [Setting.Number]
+        [Attributes.Settings.Number]
         public int NumberSetting { get; set; }
         
         private PluginContext _pluginContext;
@@ -43,11 +43,12 @@ namespace TouchPortalSDK.Extensions.Reflection.Tests.EntryFile.Settings
             Assert.AreEqual("number", _numberSetting["type"]);
         }
 
-        //[Test]
-        //public void Setting_Default_Empty_Test()
-        //{
-        //    Assert.AreEqual("default", _category["default"]);
-        //}
+        [Test]
+        public void Setting_Default_Empty_Test()
+        {
+            Assert.False(_textSetting.ContainsKey("default"));
+            Assert.False(_numberSetting.ContainsKey("default"));
+        }
 
         [Test]
         public void Setting_ReadOnly_Empty_Test()
@@ -55,13 +56,7 @@ namespace TouchPortalSDK.Extensions.Reflection.Tests.EntryFile.Settings
             Assert.AreEqual(false, _textSetting["readOnly"]);
             Assert.AreEqual(false, _numberSetting["readOnly"]);
         }
-
-        //[Test]
-        //public void Setting_MaxLength_Empty_Test()
-        //{
-        //    Assert.AreEqual("maxLength", _category["maxLength"]);
-        //}
-
+        
         [Test]
         public void Setting_IsPassword_Empty_Test()
         {
@@ -69,16 +64,27 @@ namespace TouchPortalSDK.Extensions.Reflection.Tests.EntryFile.Settings
             Assert.AreEqual(false, _numberSetting["isPassword"]);
         }
 
-        //[Test]
-        //public void Setting_MinValue_Empty_Test()
-        //{
-        //    Assert.AreEqual("minValue", _category["minValue"]);
-        //}
+        [Test]
+        public void Setting_MaxLength_Empty_Test()
+        {
+            Assert.False(_textSetting.ContainsKey("maxLenght"));
+            Assert.False(_numberSetting.ContainsKey("maxLenght"));
+            Assert.False(_textSetting.ContainsKey("maxLength"));
+            Assert.False(_numberSetting.ContainsKey("maxLength"));
+        }
 
-        //[Test]
-        //public void Setting_MaxValue_Empty_Test()
-        //{
-        //    Assert.AreEqual("maxValue", _category["maxValue"]);
-        //}
+        [Test]
+        public void Setting_MinValue_Empty_Test()
+        {
+            Assert.False(_textSetting.ContainsKey("minValue"));
+            Assert.False(_numberSetting.ContainsKey("minValue"));
+        }
+
+        [Test]
+        public void Setting_MaxValue_Empty_Test()
+        {
+            Assert.False(_textSetting.ContainsKey("maxValue"));
+            Assert.False(_numberSetting.ContainsKey("maxValue"));
+        }
     }
 }

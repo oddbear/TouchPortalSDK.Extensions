@@ -13,7 +13,7 @@ namespace TouchPortalSDK.Extensions.Reflection.Tests.EntryFile.States
         private Dictionary<string, object> _category;
         private Dictionary<string, object> _state;
 
-        [State]
+        [Attributes.States.Text]
         public string State { get; set; }
 
         [SetUp]
@@ -38,7 +38,7 @@ namespace TouchPortalSDK.Extensions.Reflection.Tests.EntryFile.States
         [Test]
         public void State_Type_Empty_Test()
         {
-            Assert.AreEqual("choice", _state["type"]);
+            Assert.AreEqual("text", _state["type"]);
         }
 
         [Test]
@@ -56,7 +56,7 @@ namespace TouchPortalSDK.Extensions.Reflection.Tests.EntryFile.States
         [Test]
         public void State_ValueChoices_Empty_Test()
         {
-            Assert.Throws<KeyNotFoundException>(() => _ = _state["valueChoices"]);
+            Assert.False(_state.ContainsKey("valueChoices"));
         }
     }
 }

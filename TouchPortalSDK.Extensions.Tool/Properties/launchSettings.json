@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "TouchPortalSDK.Extensions.Tool": {
+      "commandName": "Project",
+      "commandLineArgs": "--entry --package -o \"$(SolutionDir)TouchPortalSDK.Extensions.Sample\\bin\\$(Configuration)\\$(TargetFramework)\" -a \"$(SolutionDir)TouchPortalSDK.Extensions.Sample\\bin\\$(Configuration)\\$(TargetFramework)\\TouchPortalSDK.Extensions.Sample.dll\""
+    }
+  }
+}

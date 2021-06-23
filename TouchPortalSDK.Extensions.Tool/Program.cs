@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.IO.Compression;
 using System.Reflection;
+using System.Text.Json;
 
 namespace TouchPortalSDK.Extensions.Tool
 {
@@ -12,24 +13,24 @@ namespace TouchPortalSDK.Extensions.Tool
         {
             var entry = false;
             var package = false; //TODO: find a configuration that works. And why not toggle with a output file path?
-            var showHelp = false;
+            var help = false;
             var outdir = ".";
             var assemblyName = string.Empty;
 
             //"h|help", "show this message and exit"
             var options = new OptionSet
             {
-                { "e|entry", "Creates the entry.tp file.", (bool e) => entry = e },
-                { "p|package", "Creates the .tpp package file.", (bool p) => package = p },
                 { "o|outdir=", "The output directory of the build, ex. $(OutDir) if using variable.", o => outdir = o },
                 { "a|assemblyName=", "Assembly name of the plugin, ex. $(AssemblyName) if using variable.", a => assemblyName = a },
-                { "h|help", "Show this message and exit", (bool h) => showHelp = h },
+                { "e|entry", "Creates the entry.tp file.", (e) => entry = e != null },
+                { "p|package", "Creates the .tpp package file.", (p) => package = p != null },
+                { "h|help", "Show this message and exit", (h) => help = h != null }
                 //TODO: LogLevel, error, warn, verbose...
             };
 
             options.Parse(args);
 
-            if (string.IsNullOrWhiteSpace(outdir) || string.IsNullOrWhiteSpace(assemblyName) || showHelp)
+            if (string.IsNullOrWhiteSpace(outdir) || string.IsNullOrWhiteSpace(assemblyName) || help)
             {
                 ShowHelp(options);
                 return;
@@ -58,19 +59,17 @@ namespace TouchPortalSDK.Extensions.Tool
             Console.WriteLine("Test: -------- ");
             Console.WriteLine($"Generating from assembly: '{assemblyFile.Location}', version: '{versionString}'");
 
-            //var pluginAnalyzer = new PluginTree(assemblyFile);
-            //var generatorIdentifiers = new GeneratorIdentifiers(pluginAnalyzer);
-            //var entryFileBuilder = new EntryFileBuilder(pluginAnalyzer, generatorIdentifiers);
+            var context = Reflection.PluginTreeBuilder.Build(assemblyFile);
+            var entryFileObject = Reflection.EntryFileBuilder.BuildEntryFile(context);
+            
+            var entryFileContents = JsonSerializer.Serialize(entryFileObject, new JsonSerializerOptions
+            {
+                WriteIndented = true
+            });
 
-            //var entryFileObject = entryFileBuilder.BuildEntryFile();
-            //var entryFileContents = JsonSerializer.Serialize(entryFileObject, new JsonSerializerOptions
-            //{
-            //    WriteIndented = true
-            //});
+            var entryFilePath = Path.Combine(outdir, "entry.tp");
 
-            //var entryFilePath = Path.Combine(outdir, "entry.tp");
-
-            //File.WriteAllText(entryFilePath, entryFileContents);
+            File.WriteAllText(entryFilePath, entryFileContents);
         }
 
         private static void PackageTppFile(string pluginId, string publishPath, string outputPath)

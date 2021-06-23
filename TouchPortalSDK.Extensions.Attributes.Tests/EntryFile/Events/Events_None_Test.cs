@@ -14,8 +14,8 @@ namespace TouchPortalSDK.Extensions.Reflection.Tests.EntryFile.Events
         private Dictionary<string, object> _category;
         private Dictionary<string, object> _event;
 
-        [State]
-        [Event]
+        [Attributes.States.Text]
+        [Attributes.Events.Communicate]
         public string State { get; set; }
 
         [SetUp]

@@ -14,7 +14,7 @@ namespace TouchPortalSDK.Extensions.Reflection.Tests.EntryFile.Data.Number
         private Dictionary<string, object> _action;
         private Dictionary<string, object> _data;
 
-        [Action]
+        [Attributes.Actions.Communicate]
         public void Action([Attributes.Data.Number] string value)
         {
             //
@@ -62,7 +62,7 @@ namespace TouchPortalSDK.Extensions.Reflection.Tests.EntryFile.Data.Number
         [Test]
         public void Data_ValueChoices_Empty_Test()
         {
-            Assert.Throws<KeyNotFoundException>(() => _ = _data["valueChoices"]);
+            Assert.False(_data.ContainsKey("valueChoices"));
         }
 
         [Test]

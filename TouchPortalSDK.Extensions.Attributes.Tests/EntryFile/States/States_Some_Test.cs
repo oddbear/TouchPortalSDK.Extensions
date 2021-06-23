@@ -15,14 +15,13 @@ namespace TouchPortalSDK.Extensions.Reflection.Tests.EntryFile.States
         private Dictionary<string, object> _category;
         private Dictionary<string, object> _state;
 
-        public enum Categories {[Category(id: "category")] Category1 }
+        public enum Categories {[Category(Id = "category")] Category1 }
 
-        [State(category: "category",
-            id: "stateId",
-            type:"text",
-            desc:"desc",
-            @default:"default",
-            valueChoices: new []{ "test" })]
+        [Attributes.States.Choice(Category = "category",
+            Id = "stateId",
+            Desc = "desc",
+            Default = "default",
+            ValueChoices = new []{ "test" })]
         public string State { get; set; }
 
         [SetUp]
@@ -47,7 +46,7 @@ namespace TouchPortalSDK.Extensions.Reflection.Tests.EntryFile.States
         [Test]
         public void State_Type_Empty_Test()
         {
-            Assert.AreEqual("text", _state["type"]);
+            Assert.AreEqual("choice", _state["type"]);
         }
 
         [Test]

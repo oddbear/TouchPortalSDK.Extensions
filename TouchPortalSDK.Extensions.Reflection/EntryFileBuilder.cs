@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using TouchPortalSDK.Extensions.Attributes;
 using TouchPortalSDK.Extensions.Reflection.Contexts;
@@ -9,35 +10,56 @@ namespace TouchPortalSDK.Extensions.Reflection
     {
         public static Dictionary<string, object> BuildEntryFile(PluginContext pluginContext)
         {
-            var entry = new Dictionary<string, object>();
-            //TODO: Configuration...
-            //TODO: Plugin_start_cmd...
+            var entryObject = new Dictionary<string, object>();
+
+            var pluginAttribute = pluginContext.PluginAttribute;
 
             //Required:
-            entry["sdk"] = 3;
+            entryObject["sdk"] = pluginAttribute.Sdk;
 
             //Required:
-            entry["version"] = 1; //TODO: Fix
+            entryObject["version"] = pluginAttribute.Version;
 
             //Required:
-            entry["name"] = pluginContext.GetName();
+            entryObject["name"] = pluginContext.GetName();
 
             //Required:
-            entry["id"] = pluginContext.GetId();
+            entryObject["id"] = pluginContext.GetId();
 
             //Optional:
-            //entry["configuration"] = 
+            var configurationObject = BuildConfiguration(pluginAttribute);
+            if (configurationObject.Any())
+            {
+                entryObject["configuration"] = configurationObject;
+            }
 
+            //TODO: Plugin_start_cmd...
             //Optional:
             //entry["plugin_start_cmd"] = 
 
             //Required:
-            entry["categories"] = BuildCategories(pluginContext);
+            entryObject["categories"] = BuildCategories(pluginContext);
 
             //Optional:
-            entry["settings"] = BuildSettings(pluginContext);
+            entryObject["settings"] = BuildSettings(pluginContext);
 
-            return entry;
+            return entryObject;
+        }
+
+        private static Dictionary<string, object> BuildConfiguration(PluginAttribute pluginAttribute)
+        {
+            var configurationObject = new Dictionary<string, object>();
+            if (pluginAttribute.ColorDark != null)
+            {
+                configurationObject["colorDark"] = pluginAttribute.ColorDark;
+            }
+
+            if (pluginAttribute.ColorDark != null)
+            {
+                configurationObject["colorLight"] = pluginAttribute.ColorLight;
+            }
+
+            return configurationObject;
         }
 
         private static List<object> BuildSettings(PluginContext pluginContext)
@@ -46,53 +68,59 @@ namespace TouchPortalSDK.Extensions.Reflection
 
             foreach (var settingContext in pluginContext.SettingContexts)
             {
-                var setting = new Dictionary<string, object>();
+                var settingObject = new Dictionary<string, object>();
 
-                var attribute = settingContext.SettingAttribute;
-
-                //Required:
-                setting["name"] = settingContext.GetName();
-
-                //Optional:
-                if (attribute.Default != null)
-                {
-                    setting["default"] = attribute.Default;
-                }
+                var settingAttribute = settingContext.SettingAttribute;
 
                 //Required:
-                setting["type"] = settingContext.GetSettingType();
+                settingObject["name"] = settingContext.GetName();
+                
+                //Required:
+                settingObject["type"] = settingContext.GetSettingType();
 
-                if (attribute is Setting.TextAttribute text)
+                if (settingAttribute is Settings.TextAttribute textAttribute)
                 {
                     //Optional:
-                    if (text.MaxLength != null)
+                    if (textAttribute.Default != null)
                     {
-                        setting["maxLenght"] = text.MaxLength; //TODO: Is this typo fixed, or is it permanent (still in the documentation).
+                        settingObject["default"] = textAttribute.Default;
+                    }
+
+                    //Optional:
+                    if (textAttribute.MaxLength != int.MinValue)
+                    {
+                        settingObject["maxLenght"] = textAttribute.MaxLength; //TODO: Is this typo fixed, or is it permanent (still in the documentation).
                     }
                 }
 
                 //Optional:
-                setting["isPassword"] = attribute.IsPassword;
+                settingObject["isPassword"] = settingAttribute.IsPassword;
 
-                if (attribute is Setting.NumberAttribute number)
+                if (settingAttribute is Settings.NumberAttribute numberAttribute)
                 {
-                    if (number.MinValue != null)
+                    //Optional:
+                    if (!double.IsNaN(numberAttribute.Default))
                     {
-                        //Optional:
-                        setting["minValue"] = number.MinValue;
+                        settingObject["default"] = numberAttribute.Default.ToString(CultureInfo.InvariantCulture);
                     }
 
-                    if (number.MaxValue != null)
+                    if (!double.IsNaN(numberAttribute.MinValue))
                     {
                         //Optional:
-                        setting["maxValue"] = number.MaxValue;
+                        settingObject["minValue"] = numberAttribute.MinValue;
+                    }
+
+                    if (!double.IsNaN(numberAttribute.MaxValue))
+                    {
+                        //Optional:
+                        settingObject["maxValue"] = numberAttribute.MaxValue;
                     }
                 }
 
                 //Optional:
-                setting["readOnly"] = attribute.ReadOnly;
+                settingObject["readOnly"] = settingAttribute.ReadOnly;
 
-                settings.Add(setting);
+                settings.Add(settingObject);
             }
 
             return settings;
@@ -104,30 +132,30 @@ namespace TouchPortalSDK.Extensions.Reflection
 
             foreach (var categoryContext in pluginContext.CategoryContexts)
             {
-                var category = new Dictionary<string, object>();
+                var categoryObject = new Dictionary<string, object>();
 
-                var attribute = categoryContext.CategoryAttribute;
-
-                //Required:
-                category["id"] = categoryContext.GetId();
+                var categoryAttribute = categoryContext.CategoryAttribute;
 
                 //Required:
-                category["name"] = categoryContext.GetName();
+                categoryObject["id"] = categoryContext.GetId();
+
+                //Required:
+                categoryObject["name"] = categoryContext.GetName();
 
                 //Optional:
-                if (!string.IsNullOrWhiteSpace(attribute.ImagePath))
-                    category["imagepath"] = attribute.ImagePath;
+                if (!string.IsNullOrWhiteSpace(categoryAttribute.ImagePath))
+                    categoryObject["imagepath"] = categoryAttribute.ImagePath;
 
                 //Required (but can be empty):
-                category["actions"] = BuildActions(pluginContext, categoryContext);
+                categoryObject["actions"] = BuildActions(pluginContext, categoryContext);
 
                 //Required (but can be empty):
-                category["states"] = BuildStates(pluginContext, categoryContext);
+                categoryObject["states"] = BuildStates(pluginContext, categoryContext);
 
                 //Required (but can be empty):
-                category["events"] = BuildEvents(pluginContext, categoryContext);
+                categoryObject["events"] = BuildEvents(pluginContext, categoryContext);
 
-                categories.Add(category);
+                categories.Add(categoryObject);
             }
 
             return categories;
@@ -142,52 +170,55 @@ namespace TouchPortalSDK.Extensions.Reflection
                 if (actionContext.CategoryContext != categoryContext)
                     continue;
 
-                var attribute = actionContext.ActionAttribute;
+                var actionAttribute = actionContext.ActionAttribute;
 
-                var action = new Dictionary<string, object>();
-
-                //Required:
-                action["id"] = actionContext.GetId();
+                var actionObject = new Dictionary<string, object>();
 
                 //Required:
-                action["name"] = actionContext.GetName();
+                actionObject["id"] = actionContext.GetId();
 
                 //Required:
-                action["prefix"] = attribute.Prefix;
+                actionObject["name"] = actionContext.GetName();
 
                 //Required:
-                action["type"] = attribute.Type;
+                actionObject["prefix"] = actionAttribute.Prefix;
+
+                //Required:
+                actionObject["type"] = actionAttribute.Type;
+
+                if (actionAttribute is Actions.ExecuteAttribute executeAttribute)
+                {
+                    //Optional:
+                    if (!string.IsNullOrWhiteSpace(executeAttribute.ExecutionType))
+                        actionObject["executionType"] = executeAttribute.ExecutionType;
+
+                    //Optional:
+                    if (!string.IsNullOrWhiteSpace(executeAttribute.ExecutionCmd))
+                        actionObject["execution_cmd"] = executeAttribute.ExecutionCmd;
+                }
 
                 //Optional:
-                if (!string.IsNullOrWhiteSpace(attribute.ExecutionType))
-                    action["executionType"] = attribute.ExecutionType;
-
-                //Optional:
-                if (!string.IsNullOrWhiteSpace(attribute.ExecutionCmd))
-                    action["execution_cmd"] = attribute.ExecutionCmd;
-
-                //Optional:
-                if (!string.IsNullOrWhiteSpace(attribute.Description))
-                    action["description"] = attribute.Description;
+                if (!string.IsNullOrWhiteSpace(actionAttribute.Description))
+                    actionObject["description"] = actionAttribute.Description;
 
                 //Optional:
                 //TODO: If it does not exist, it will only show the (Prefix|Name) both inlined or not.
                 //For now the rule should be to not include this if empty.
                 //In the future, generate a default if empty?
-                if (!string.IsNullOrWhiteSpace(attribute.Format))
-                    action["format"] = attribute.Format;
+                if (!string.IsNullOrWhiteSpace(actionAttribute.Format))
+                    actionObject["format"] = actionAttribute.Format;
 
                 //Optional:
-                action["tryInline"] = attribute.TryInline;
+                actionObject["tryInline"] = actionAttribute.TryInline;
 
                 //Optional:
-                action["hasHoldFunctionality"] = attribute.HasHoldFunctionality;
+                actionObject["hasHoldFunctionality"] = actionAttribute.HasHoldFunctionality;
 
                 //Optional:
                 if (pluginContext.DataContexts.Any())
-                    action["data"] = BuildData(pluginContext, actionContext);
+                    actionObject["data"] = BuildData(pluginContext, actionContext);
 
-                actions.Add(action);
+                actions.Add(actionObject);
             }
 
             return actions;
@@ -202,59 +233,86 @@ namespace TouchPortalSDK.Extensions.Reflection
                 if (dataContext.ActionContext != actionContext)
                     continue;
 
-                var attribute = dataContext.DataAttribute;
+                var dataAttribute = dataContext.DataAttribute;
 
-                var data = new Dictionary<string, object>();
-
-                //Required:
-                data["id"] = dataContext.GetId();
+                var dataObject = new Dictionary<string, object>();
 
                 //Required:
-                data["type"] = attribute.Type;
+                dataObject["id"] = dataContext.GetId();
 
                 //Required:
-                data["label"] = dataContext.GetLabel();
+                dataObject["type"] = dataAttribute.Type;
 
                 //Required:
-                data["default"] = attribute.Default;
+                dataObject["label"] = dataContext.GetLabel();
 
-                if (attribute is Data.ChoiceAttribute choice)
+                if (dataAttribute is Data.TextAttribute textAttribute)
                 {
+                    //Required:
+                    dataObject["default"] = textAttribute.Default;
+                }
+
+                if (dataAttribute is Data.FolderAttribute folderAttribute)
+                {
+                    //Required:
+                    dataObject["default"] = folderAttribute.Default;
+                }
+
+                if (dataAttribute is Data.SwitchAttribute switchAttribute)
+                {
+                    //Required:
+                    dataObject["default"] = switchAttribute.Default;
+                }
+
+                if (dataAttribute is Data.ColorAttribute colorAttribute)
+                {
+                    //Required:
+                    dataObject["default"] = colorAttribute.Default;
+                }
+
+                if (dataAttribute is Data.ChoiceAttribute choiceAttribute)
+                {
+                    //Required:
+                    dataObject["default"] = choiceAttribute.Default;
+
                     //Required (if choice):
-                    data["valueChoices"] = choice.ValueChoices;
+                    dataObject["valueChoices"] = choiceAttribute.ValueChoices;
                 }
 
-                if (attribute is Data.FileAttribute file)
+                if (dataAttribute is Data.FileAttribute fileAttribute)
                 {
+                    //Required:
+                    dataObject["default"] = fileAttribute.Default;
+
                     //Optional:
-                    if (file.Extensions.Any())
+                    if (fileAttribute.Extensions.Any())
                     {
-                        data["extensions"] = file.Extensions;
+                        dataObject["extensions"] = fileAttribute.Extensions;
                     }
                 }
 
-                if (attribute is Data.NumberAttribute number)
+                if (dataAttribute is Data.NumberAttribute numberAttribute)
                 {
+                    //Required:
+                    dataObject["default"] = numberAttribute.Default;
+
                     //Optional:
-                    if (number.AllowDecimals != null)
+                    dataObject["allowDecimals"] = numberAttribute.AllowDecimals;
+
+                    //Optional:
+                    if (!double.IsNaN(numberAttribute.MinValue))
                     {
-                        data["allowDecimals"] = number.AllowDecimals;
+                        dataObject["minValue"] = numberAttribute.MinValue;
                     }
 
                     //Optional:
-                    if (number.MinValue != null)
+                    if (!double.IsNaN(numberAttribute.MaxValue))
                     {
-                        data["minValue"] = number.MinValue;
-                    }
-
-                    //Optional:
-                    if (number.MaxValue != null)
-                    {
-                        data["maxValue"] = number.MaxValue;
+                        dataObject["maxValue"] = numberAttribute.MaxValue;
                     }
                 }
 
-                datas.Add(data);
+                datas.Add(dataObject);
             }
             return datas;
         }
@@ -268,27 +326,36 @@ namespace TouchPortalSDK.Extensions.Reflection
                 if (stateContext.CategoryContext != categoryContext)
                     continue;
 
-                var attribute = stateContext.StateAttribute;
+                var stateAttribute = stateContext.StateAttribute;
 
-                var state = new Dictionary<string, object>();
-
-                //Required:
-                state["id"] = stateContext.GetId();
+                var stateObject = new Dictionary<string, object>();
 
                 //Required:
-                state["type"] = attribute.Type;
+                stateObject["id"] = stateContext.GetId();
 
                 //Required:
-                state["desc"] = stateContext.GetDescription();
+                stateObject["type"] = stateAttribute.Type;
 
                 //Required:
-                state["default"] = attribute.Default;
+                stateObject["desc"] = stateContext.GetDescription();
 
-                //Optional:
-                if (attribute.ValueChoices.Any())
-                    state["valueChoices"] = attribute.ValueChoices;
+                if (stateAttribute is States.ChoiceAttribute choiceAttribute)
+                {
+                    //Required:
+                    stateObject["default"] = choiceAttribute.Default;
 
-                states.Add(state);
+                    //Optional:
+                    if (choiceAttribute.ValueChoices != null)
+                        stateObject["valueChoices"] = choiceAttribute.ValueChoices;
+                }
+
+                if (stateAttribute is States.TextAttribute textAttribute)
+                {
+                    //Required:
+                    stateObject["default"] = textAttribute.Default;
+                }
+
+                states.Add(stateObject);
             }
 
             return states;
@@ -304,32 +371,32 @@ namespace TouchPortalSDK.Extensions.Reflection
                 if (eventContext.StateContext.CategoryContext != categoryContext)
                     continue;
 
-                var attribute = eventContext.EventAttribute;
+                var eventAttribute = eventContext.EventAttribute;
 
-                var @event = new Dictionary<string, object>();
-
-                //Required:
-                @event["id"] = eventContext.GetId();
+                var eventObject = new Dictionary<string, object>();
 
                 //Required:
-                @event["name"] = eventContext.GetName();
+                eventObject["id"] = eventContext.GetId();
 
                 //Required:
-                @event["format"] = attribute.Format;
+                eventObject["name"] = eventContext.GetName();
 
                 //Required:
-                @event["type"] = attribute.Type;
+                eventObject["format"] = eventAttribute.Format;
 
                 //Required:
-                @event["valueChoices"] = attribute.ValueChoices;
+                eventObject["type"] = eventAttribute.Type;
 
                 //Required:
-                @event["valueType"] = attribute.ValueType;
+                eventObject["valueChoices"] = eventAttribute.ValueChoices;
 
                 //Required:
-                @event["valueStateId"] = eventContext.GetValueStateId();
+                eventObject["valueType"] = eventAttribute.ValueType;
 
-                events.Add(@event);
+                //Required:
+                eventObject["valueStateId"] = eventContext.GetValueStateId();
+
+                events.Add(eventObject);
             }
 
             return events;

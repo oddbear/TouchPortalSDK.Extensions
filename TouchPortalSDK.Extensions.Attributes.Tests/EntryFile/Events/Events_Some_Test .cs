@@ -13,13 +13,12 @@ namespace TouchPortalSDK.Extensions.Reflection.Tests.EntryFile.Events
         private Dictionary<string, object> _category;
         private Dictionary<string, object> _event;
 
-        [State(id: "stateId")]
-        [Event(id: "eventId",
-            name: "Event Name",
-            format: "Format",
-            type:"dummy1",
-            valueChoices: new [] { "test" },
-            valueType: "dummy2")]
+        [Attributes.States.Text(Id = "stateId")]
+        [Attributes.Events.Communicate(Id = "eventId",
+            Name = "Event Name",
+            Format = "Format",
+            ValueChoices = new [] { "test" },
+            ValueType = "dummy2")]
         public string State { get; set; }
 
         [SetUp]
@@ -56,7 +55,7 @@ namespace TouchPortalSDK.Extensions.Reflection.Tests.EntryFile.Events
         [Test]
         public void Event_Type_Empty_Test()
         {
-            Assert.AreEqual("dummy1", _event["type"]);
+            Assert.AreEqual("communicate", _event["type"]);
         }
         
         [Test]

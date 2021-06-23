@@ -12,6 +12,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{E36E5554-A24C-4392-964F-C7BA505F94E0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TouchPortalSDK.Extensions.Tool", "TouchPortalSDK.Extensions.Tool\TouchPortalSDK.Extensions.Tool.csproj", "{10342B42-1FB8-40B6-802C-34370EE74DF8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{918467B2-4043-4557-B0CE-420E2343C99C} = {918467B2-4043-4557-B0CE-420E2343C99C}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TouchPortalSDK.Extensions.Attributes", "TouchPortalSDK.Extensions.Attributes\TouchPortalSDK.Extensions.Attributes.csproj", "{C62F838F-1336-4CCC-8D1B-61C8A9FE966D}"
 EndProject
@@ -21,7 +24,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{D5417CEF
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TouchPortalSDK.Extensions.Reflection.Tests", "TouchPortalSDK.Extensions.Attributes.Tests\TouchPortalSDK.Extensions.Reflection.Tests.csproj", "{8B5DD461-ED6C-44D8-8A9E-1F5E63EC2A0C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TouchPortalSDK.Extensions.Reflection", "TouchPortalSDK.Extensions.Reflection\TouchPortalSDK.Extensions.Reflection.csproj", "{BACCD6A6-8692-4882-A188-2E52F6627540}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TouchPortalSDK.Extensions.Reflection", "TouchPortalSDK.Extensions.Reflection\TouchPortalSDK.Extensions.Reflection.csproj", "{BACCD6A6-8692-4882-A188-2E52F6627540}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

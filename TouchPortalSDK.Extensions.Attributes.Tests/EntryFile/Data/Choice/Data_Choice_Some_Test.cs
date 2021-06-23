@@ -14,8 +14,8 @@ namespace TouchPortalSDK.Extensions.Reflection.Tests.EntryFile.Data.Choice
         private Dictionary<string, object> _action;
         private Dictionary<string, object> _data;
 
-        [Action]
-        public void Action([Attributes.Data.Choice(id: "dataId", label: "Data Label", @default:"dummy", valueChoices:new []{"test"})]string value)
+        [Attributes.Actions.Communicate]
+        public void Action([Attributes.Data.Choice(Id = "dataId", Label = "Data Label", Default = "dummy", ValueChoices = new []{"test"})]string value)
         {
             //
         }
@@ -68,25 +68,25 @@ namespace TouchPortalSDK.Extensions.Reflection.Tests.EntryFile.Data.Choice
         [Test]
         public void Data_Extensions_Empty_Test()
         {
-            Assert.Throws<KeyNotFoundException>(() => _ = _data["extensions"]);
+            Assert.False(_data.ContainsKey("extensions"));
         }
 
         [Test]
         public void Data_AllowDecimals_Empty_Test()
         {
-            Assert.Throws<KeyNotFoundException>(() => _ = _data["allowDecimals"]);
+            Assert.False(_data.ContainsKey("allowDecimals"));
         }
 
         [Test]
         public void Data_MinValue_Empty_Test()
         {
-            Assert.Throws<KeyNotFoundException>(() => _ = _data["minValue"]);
+            Assert.False(_data.ContainsKey("minValue"));
         }
 
         [Test]
         public void Data_MaxValue_Empty_Test()
         {
-            Assert.Throws<KeyNotFoundException>(() => _ = _data["maxValue"]);
+            Assert.False(_data.ContainsKey("maxValue"));
         }
     }
 }

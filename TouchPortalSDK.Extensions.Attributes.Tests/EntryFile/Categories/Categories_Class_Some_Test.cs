@@ -7,7 +7,7 @@ using CategoryAttribute = TouchPortalSDK.Extensions.Attributes.CategoryAttribute
 namespace TouchPortalSDK.Extensions.Reflection.Tests.EntryFile.Categories
 {
     [Plugin]
-    [Category(id: "categoryId", name: "Category Name", imagePath: "imagePath")]
+    [Category(Id = "categoryId", Name = "Category Name", ImagePath = "imagePath")]
     public class Categories_Class_Some_Test
     {
         private PluginContext _pluginContext;

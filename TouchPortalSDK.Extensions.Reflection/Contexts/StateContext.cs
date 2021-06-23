@@ -7,10 +7,10 @@ namespace TouchPortalSDK.Extensions.Reflection.Contexts
     {
         public CategoryContext CategoryContext { get; }
 
-        public StateAttribute StateAttribute { get; }
+        public States.StateAttribute StateAttribute { get; }
         public PropertyInfo PropertyInfo { get; }
 
-        public StateContext(CategoryContext categoryContext, StateAttribute stateAttribute, PropertyInfo propertyInfo)
+        public StateContext(CategoryContext categoryContext, States.StateAttribute stateAttribute, PropertyInfo propertyInfo)
         {
             CategoryContext = categoryContext;
             StateAttribute = stateAttribute;

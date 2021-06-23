@@ -41,7 +41,7 @@ namespace TouchPortalSDK.Extensions.Reflection.Tests.EntryFile.Categories
         [Test]
         public void Category_ImagePath_Set_Test()
         {
-            Assert.Throws<KeyNotFoundException>(() => _ =_category["imagepath"]);
+            Assert.False(_category.ContainsKey("imagepath"));
         }
     }
 }

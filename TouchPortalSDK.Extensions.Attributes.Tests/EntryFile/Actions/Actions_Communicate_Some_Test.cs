@@ -7,26 +7,23 @@ using CategoryAttribute = TouchPortalSDK.Extensions.Attributes.CategoryAttribute
 namespace TouchPortalSDK.Extensions.Reflection.Tests.EntryFile.Actions
 {
     [Plugin]
-    public class Actions_Some_Test
+    public class Actions_Communicate_Some_Test
     {
         private PluginContext _pluginContext;
         private string _pluginId;
         private Dictionary<string, object> _category;
         private Dictionary<string, object> _action;
 
-        public enum Categories { [Category(id: "category")] Category1 }
+        public enum Categories { [Category(Id = "category")] Category1 }
 
-        [Action(category: "category",
-            id: "actionId",
-            name: "Action Name",
-            prefix: "Prefix",
-            type: "execute",
-            executionType: "Bash",
-            executionCmd: "Execution Cmd",
-            description: "Description",
-            tryInline:true,
-            format:"Format",
-            hasHoldFunctionality:true)]
+        [Attributes.Actions.Communicate(Category = "category",
+            Id = "actionId",
+            Name = "Action Name",
+            Prefix = "Prefix",
+            Description = "Description",
+            TryInline = true,
+            Format = "Format",
+            HasHoldFunctionality = true)]
         public void Action()
         {
             //
@@ -66,19 +63,19 @@ namespace TouchPortalSDK.Extensions.Reflection.Tests.EntryFile.Actions
         [Test]
         public void Action_Type_Empty_Test()
         {
-            Assert.AreEqual("execute", _action["type"]);
+            Assert.AreEqual("communicate", _action["type"]);
         }
         
         [Test]
         public void Action_ExecutionType_Set_Test()
         {
-            Assert.AreEqual("Bash", _action["executionType"]);
+            Assert.False(_action.ContainsKey("executionType"));
         }
 
         [Test]
         public void Action_ExecutionCmd_Set_Test()
         {
-            Assert.AreEqual("Execution Cmd", _action["execution_cmd"]);
+            Assert.False(_action.ContainsKey("execution_cmd"));
         }
 
         [Test]

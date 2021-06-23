@@ -13,7 +13,7 @@ namespace TouchPortalSDK.Extensions.Reflection.Tests.EntryFile.Actions
         private Dictionary<string, object> _category;
         private Dictionary<string, object> _action;
 
-        [Action]
+        [Attributes.Actions.Communicate]
         public void Action()
         {
             //
@@ -59,27 +59,27 @@ namespace TouchPortalSDK.Extensions.Reflection.Tests.EntryFile.Actions
         [Test]
         public void Action_ExecutionType_Set_Test()
         {
-            Assert.Throws<KeyNotFoundException>(() => _ = _action["executionType"]);
+            Assert.False(_action.ContainsKey("executionType"));
         }
 
         [Test]
         public void Action_ExecutionCmd_Set_Test()
         {
-            Assert.Throws<KeyNotFoundException>(() => _ = _action["execution_cmd"]);
+            Assert.False(_action.ContainsKey("execution_cmd"));
         }
 
         [Test]
         public void Action_Description_Set_Test()
         {
             //TODO: This rule might change to generate a default in the future:
-            Assert.Throws<KeyNotFoundException>(() => _ = _action["description"]);
+            Assert.False(_action.ContainsKey("description"));
         }
 
         [Test]
         public void Action_Format_Set_Test()
         {
             //TODO: This rule might change to generate a default in the future:
-            Assert.Throws<KeyNotFoundException>(() => _ = _action["format"]);
+            Assert.False(_action.ContainsKey("format"));
         }
 
         [Test]

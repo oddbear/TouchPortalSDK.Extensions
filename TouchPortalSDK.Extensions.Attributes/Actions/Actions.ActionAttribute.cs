@@ -18,7 +18,7 @@ namespace TouchPortalSDK.Extensions.Attributes
             public string Prefix { get; set; } = string.Empty;
             public string Description { get; set; } = null;
             public string Format { get; set; } = null;
-            public bool TryInline { get; set; } = false;
+            public bool TryInline { get; set; } = true; //Default is false, but false is buggy. So true by default in this implementation.
             public bool HasHoldFunctionality { get; set; } = false;
         }
     }

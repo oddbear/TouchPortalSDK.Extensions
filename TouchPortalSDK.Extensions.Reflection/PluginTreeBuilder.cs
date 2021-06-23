@@ -135,7 +135,7 @@ namespace TouchPortalSDK.Extensions.Reflection
             foreach (var action in actions)
             {
                 var categoryContext = plugin.CategoryContexts
-                    .SingleOrDefault(category => category.GetName() == action.attribute.Category);
+                    .SingleOrDefault(category => category.GetCategoryId() == action.attribute.Category);
 
                 if (categoryContext is null && plugin.CategoryContexts.Count == 1)
                     categoryContext = plugin.CategoryContexts.Single();
@@ -150,10 +150,11 @@ namespace TouchPortalSDK.Extensions.Reflection
         {
             var datas = plugin.Type
                 .GetMethods()
-                .SelectMany(method => method.GetParameters().Select(parameter => (parameter, method)))
+                .SelectMany(method => method.GetParameters().Select((parameter, index) => (parameter, index, method)))
                 .Select(tuple => new {
                     attribute = tuple.parameter.GetCustomAttribute<Data.DataAttribute>(),
                     tuple.parameter,
+                    tuple.index,
                     tuple.method
                 })
                 .Where(action => action.attribute != null)
@@ -163,8 +164,19 @@ namespace TouchPortalSDK.Extensions.Reflection
             {
                 var actionContext = plugin.ActionContexts
                     .SingleOrDefault(action => action.MethodInfo == data.method);
-                
-                dataContexts.Add(new DataContext(actionContext, data.attribute, data.method, data.parameter));
+
+                var dataContext = new DataContext(actionContext, data.attribute, data.method, data.parameter);
+
+                if (actionContext?.ActionAttribute?.Format != null)
+                {
+                    //TODO: Implement indexed versions:
+                    var placeHolder = data.parameter.Name;
+                    actionContext.ActionAttribute.Format = actionContext.ActionAttribute.Format
+                        .Replace($"{{{data.index}}}", $"{{${dataContext.GetId()}$}}")
+                        .Replace($"{{{placeHolder}}}", $"{{${dataContext.GetId()}$}}");
+                }
+
+                dataContexts.Add(dataContext);
             }
         }
 
@@ -182,7 +194,7 @@ namespace TouchPortalSDK.Extensions.Reflection
             foreach (var state in states)
             {
                 var categoryContext = plugin.CategoryContexts
-                    .SingleOrDefault(category => category.GetName() == state.attribute.Category);
+                    .SingleOrDefault(category => category.GetCategoryId() == state.attribute.Category);
 
                 if (categoryContext is null && plugin.CategoryContexts.Count == 1)
                     categoryContext = plugin.CategoryContexts.Single();

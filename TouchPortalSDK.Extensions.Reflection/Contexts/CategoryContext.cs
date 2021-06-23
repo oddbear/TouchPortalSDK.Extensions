@@ -26,7 +26,7 @@ namespace TouchPortalSDK.Extensions.Reflection.Contexts
                 ? CategoryAttribute.Name
                 : FieldInfo?.Name ?? PluginContext.GetName();
 
-        private string GetCategoryId()
+        public string GetCategoryId()
             => FieldInfo?.Name ?? "DefaultCategory";
     }
 }

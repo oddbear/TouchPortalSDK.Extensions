@@ -6,13 +6,12 @@ namespace TouchPortalSDK.Extensions.Sample
     [Plugin]
     public class SampleTouchPortalPlugin : TouchPortalPlugin
     {
-        //TODO: Is there a more .Net friendly way of setting this?
         public enum Categories
         {
-            [Category(Name = "Category1")]
+            [Category(Name = "TP Ext Sample Cat 1")]
             Category1,
 
-            [Category(Name = "Category2")]
+            [Category(Name = "TP Ext Sample Cat 2")]
             Category2
         }
 

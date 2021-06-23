@@ -14,9 +14,9 @@ namespace TouchPortalSDK.Extensions.Reflection.Tests.EntryFile.Actions
         private Dictionary<string, object> _category;
         private Dictionary<string, object> _action;
 
-        public enum Categories { [Category(Id = "category")] Category1 }
+        public enum Categories { [Category(Name="Category Name")] Category1 }
 
-        [Attributes.Actions.Communicate(Category = "category",
+        [Attributes.Actions.Communicate(Category = nameof(Categories.Category1),
             Id = "actionId",
             Name = "Action Name",
             Prefix = "Prefix",

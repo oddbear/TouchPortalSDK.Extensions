@@ -5,13 +5,29 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <InstallPlugin>false</InstallPlugin>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\TouchPortalSDK.Extensions\TouchPortalSDK.Extensions.csproj" />
   </ItemGroup>
 
-  <Target Name="Build Entry File" AfterTargets="Build" Condition="false">
+  <Target Name = "Kill_Javaw" BeforeTargets="Build" Condition="$(InstallPlugin) == 'force'">
+    <Exec Command="taskkill /F /IM javaw.exe" IgnoreExitCode="true" ContinueOnError="true" />
+  </Target>
+
+  <Target Name="Build_Entry_File" AfterTargets="Build" Condition="$(InstallPlugin) == 'true' Or $(InstallPlugin) == 'force'">
     <Exec Command="dotnet tool update TouchPortalSDK.Extensions.Tool --version 0.1.0-*" />
     <Exec Command="dotnet tool run TouchPortalSDK --entry -o $(OutDir) -a $(AssemblyName)" />
+  </Target>
+
+  <Target Name="Copy_entry_File" AfterTargets="Build_Entry_File">
+    <Copy SourceFiles="$(ProjectDir)$(OutDir)entry.tp" DestinationFiles="$(AppData)\TouchPortal\plugins\TouchPortalSDK.Extensions.Sample\entry.tp" />
+  </Target>
+
+  <Target Name="Start_TouchPortal_with_Logging" AfterTargets="Copy_entry_File" Condition="$(InstallPlugin) == 'force'">
+    <Exec Command="&quot;$(MSBuildProgramFiles32)\Touch Portal\TouchPortal.exe&quot; -logPlugin"/>
   </Target>
 
   <Target Name="Package Plugin" AfterTargets="AfterPublish" Condition="false">

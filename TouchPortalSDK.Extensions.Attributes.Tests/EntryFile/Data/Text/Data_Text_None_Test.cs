@@ -14,7 +14,7 @@ namespace TouchPortalSDK.Extensions.Reflection.Tests.EntryFile.Data.Text
         private Dictionary<string, object> _action;
         private Dictionary<string, object> _data;
 
-        [Attributes.Actions.Communicate]
+        [Attributes.Actions.Communicate(Format = "before {value} after")]
         public void Action([Attributes.Data.Text] string value)
         {
             //
@@ -34,6 +34,14 @@ namespace TouchPortalSDK.Extensions.Reflection.Tests.EntryFile.Data.Text
             var datas = (List<object>)_action["data"];
             _data = (Dictionary<string, object>)datas[0];
         }
+
+        [Test]
+        public void Action_Format_Set_Test()
+        {
+            var dataId = _pluginId + ".DefaultCategory.action." + nameof(Action) + ".data.value";
+            Assert.AreEqual($"before {{${dataId}$}} after", _action["format"]);
+        }
+
 
         [Test]
         public void Data_Id_Empty_Test()

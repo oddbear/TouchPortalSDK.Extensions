@@ -85,7 +85,8 @@ namespace TouchPortalSDK.Extensions.Reflection.Tests.EntryFile.Actions
         [Test]
         public void Action_TryInline_Empty_Test()
         {
-            Assert.AreEqual(false, _action["tryInline"]);
+            //Overrides the false "default" from Touch Portal:
+            Assert.AreEqual(true, _action["tryInline"]);
         }
 
         [Test]

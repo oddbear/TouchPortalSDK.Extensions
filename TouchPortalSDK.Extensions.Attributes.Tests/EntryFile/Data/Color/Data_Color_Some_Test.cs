@@ -36,7 +36,7 @@ namespace TouchPortalSDK.Extensions.Reflection.Tests.EntryFile.Data.Color
         }
 
         [Test]
-        public void Data_Id_Empty_Test()
+        public void Data_Id_Set_Test()
         {
             Assert.AreEqual("dataId", _data["id"]);
         }
@@ -48,7 +48,7 @@ namespace TouchPortalSDK.Extensions.Reflection.Tests.EntryFile.Data.Color
         }
 
         [Test]
-        public void Data_Label_Empty_Test()
+        public void Data_Label_Set_Test()
         {
             Assert.AreEqual("Data Label", _data["label"]);
         }

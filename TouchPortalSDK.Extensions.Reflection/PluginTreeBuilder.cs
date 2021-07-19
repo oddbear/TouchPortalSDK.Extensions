@@ -156,6 +156,7 @@ namespace TouchPortalSDK.Extensions.Reflection
 
         private static void SetDatas(List<DataContext> dataContexts, PluginContext plugin)
         {
+            //TODO: Add support as model (ex. parameter: Model model, extract properties)?
             var datas = plugin.Type
                 .GetMethods()
                 .SelectMany(method => method.GetParameters().Select((parameter, index) => (parameter, index, method)))

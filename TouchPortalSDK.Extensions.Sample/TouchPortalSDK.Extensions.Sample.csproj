@@ -5,15 +5,22 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="8.26.0.34506">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
   <PropertyGroup>
-    <InstallPlugin>false</InstallPlugin>
+    <InstallPlugin>true</InstallPlugin>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\TouchPortalSDK.Extensions\TouchPortalSDK.Extensions.csproj" />
   </ItemGroup>
 
-  <Target Name = "Kill_Javaw" BeforeTargets="Build" Condition="$(InstallPlugin) == 'force'">
+  <Target Name="Kill_Javaw" BeforeTargets="Build" Condition="$(InstallPlugin) == 'force'">
     <Exec Command="taskkill /F /IM javaw.exe" IgnoreExitCode="true" ContinueOnError="true" />
   </Target>
 
@@ -27,7 +34,7 @@
   </Target>
 
   <Target Name="Start_TouchPortal_with_Logging" AfterTargets="Copy_entry_File" Condition="$(InstallPlugin) == 'force'">
-    <Exec Command="&quot;$(MSBuildProgramFiles32)\Touch Portal\TouchPortal.exe&quot; -logPlugin"/>
+    <Exec Command="&quot;$(MSBuildProgramFiles32)\Touch Portal\TouchPortal.exe&quot; -logPlugin" />
   </Target>
 
   <Target Name="Package Plugin" AfterTargets="AfterPublish" Condition="false">

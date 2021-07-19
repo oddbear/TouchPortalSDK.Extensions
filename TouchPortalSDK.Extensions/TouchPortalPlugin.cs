@@ -1,9 +1,14 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using TouchPortalSDK.Extensions.Annotations;
+using TouchPortalSDK.Extensions.Attributes;
 using TouchPortalSDK.Extensions.Reflection;
 using TouchPortalSDK.Extensions.Reflection.Contexts;
 using TouchPortalSDK.Interfaces;
@@ -67,11 +72,42 @@ namespace TouchPortalSDK.Extensions
             var methodInfo = action?.MethodInfo;
             if (methodInfo is null)
                 return;
+            
+            //TODO: Model? Reuse code?
+            var parameters = methodInfo.GetParameters();
+            var arguments = new object[parameters.Length];
+            foreach (var parameterInfo in parameters)
+            {
+                var attribute = parameterInfo.GetCustomAttribute<Data.DataAttribute>();
+                if (attribute is null)
+                    continue;
+
+                var dataContext = _pluginContext.DataContexts
+                    .FirstOrDefault(context => context.ParameterInfo == parameterInfo);
+
+                if (dataContext is null)
+                    continue;
+
+                var value = message.Data
+                    .FirstOrDefault(dataSelected => dataSelected.Id == dataContext.GetId())
+                    ?.Value;
+
+                if (value is null)
+                    continue;
+
+                if (parameterInfo.ParameterType == typeof(string))
+                {
+                    arguments[parameterInfo.Position] = value;
+                }
+                else
+                {
+                    arguments[parameterInfo.Position] = JsonSerializer.Deserialize(value, parameterInfo.ParameterType);
+                }
+            }
 
             //methodInfo.ReturnType.IsAssignableTo(typeof(Task))) <- Could be used before invoke for async run.
-
-            //TODO: Implement other parameters than string, and match ordering (is it always ordered?):
-            var returnValue = action?.MethodInfo.Invoke(this, data);
+            
+            var returnValue = action?.MethodInfo.Invoke(this, arguments);
 
             //TODO: Implement async "support":
             if (returnValue is Task task)

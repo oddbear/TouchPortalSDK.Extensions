@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using TouchPortalSDK.Extensions.Annotations;
@@ -13,6 +13,7 @@ using TouchPortalSDK.Extensions.Reflection;
 using TouchPortalSDK.Extensions.Reflection.Contexts;
 using TouchPortalSDK.Interfaces;
 using TouchPortalSDK.Messages.Events;
+using TouchPortalSDK.Messages.Models;
 
 namespace TouchPortalSDK.Extensions
 {
@@ -40,9 +41,44 @@ namespace TouchPortalSDK.Extensions
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        private object StringToValue(Type output, string value)
+        {
+            if (output == typeof(string))
+                return value;
+
+            try
+            {
+                //TODO: Convert to switch/parse:
+                return JsonSerializer.Deserialize(value, output);
+            }
+            catch (JsonException)
+            {
+                return Activator.CreateInstance(output);
+            }
+        }
+
+        private void SetSettings(IEnumerable<Setting> settings)
+        {
+            foreach (var setting in settings)
+            {
+                var settingContext = _pluginContext.SettingContexts
+                    .FirstOrDefault(s => s.GetName() == setting.Name);
+
+                if (settingContext is null)
+                    continue;
+
+                var propertyValue = settingContext.PropertyInfo.GetValue(this);
+                var messageValue = StringToValue(settingContext.PropertyInfo.PropertyType, setting.Value);
+                if (propertyValue != messageValue && settingContext.PropertyInfo.SetMethod != null)
+                {
+                    settingContext.PropertyInfo.SetValue(this, messageValue);
+                }
+            }
+        }
+
         public void OnInfoEvent(InfoEvent message)
         {
-            //TODO: Implement
+            SetSettings(message.Settings);
         }
 
         public void OnListChangedEvent(ListChangeEvent message)
@@ -50,25 +86,21 @@ namespace TouchPortalSDK.Extensions
             //TODO: Implement
         }
 
-        public void OnBroadcastEvent(BroadcastEvent message)
+        public virtual void OnBroadcastEvent(BroadcastEvent message)
         {
             //TODO: Implement
         }
 
         public void OnSettingsEvent(SettingsEvent message)
         {
-            //TODO: Implement
+            SetSettings(message.Values);
         }
 
         public void OnActionEvent(ActionEvent message)
         {
             var action = _pluginContext.ActionContexts
                 .FirstOrDefault(a => a.GetId() == message.ActionId);
-
-            var data = message.Data
-                .Select(d => d.Value)
-                .ToArray();
-
+            
             var methodInfo = action?.MethodInfo;
             if (methodInfo is null)
                 return;
@@ -95,34 +127,21 @@ namespace TouchPortalSDK.Extensions
                 if (value is null)
                     continue;
 
-                if (parameterInfo.ParameterType == typeof(string))
-                {
-                    arguments[parameterInfo.Position] = value;
-                }
-                else
-                {
-                    arguments[parameterInfo.Position] = JsonSerializer.Deserialize(value, parameterInfo.ParameterType);
-                }
+                arguments[parameterInfo.Position] = StringToValue(parameterInfo.ParameterType, value);
             }
-
-            //methodInfo.ReturnType.IsAssignableTo(typeof(Task))) <- Could be used before invoke for async run.
             
-            var returnValue = action?.MethodInfo.Invoke(this, arguments);
-
-            //TODO: Implement async "support":
-            if (returnValue is Task task)
-            {
-                task.GetAwaiter().GetResult();
-            }
-
+            //Invoke the Action Method:
+            _ = typeof(Task).IsAssignableFrom(methodInfo.ReturnType)
+                ? Task.Run(() => (Task)action?.MethodInfo.Invoke(this, arguments) ?? Task.CompletedTask)
+                : action?.MethodInfo.Invoke(this, arguments);
         }
 
-        public void OnClosedEvent(string message)
+        public virtual void OnClosedEvent(string message)
         {
             //TODO: Implement
         }
 
-        public void OnUnhandledEvent(string jsonMessage)
+        public virtual void OnUnhandledEvent(string jsonMessage)
         {
             //TODO: Implement
         }

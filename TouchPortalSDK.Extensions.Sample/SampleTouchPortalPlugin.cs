@@ -22,11 +22,11 @@ namespace TouchPortalSDK.Extensions.Sample
 
         //TODO: How to signal a change? PropertyChanged? Setting<string>.Value <-- ?
         [Settings.Text]
-        public string TextSetting { get; } //Settings does not have any setters, unless they are ReadOnly.
+        public string TextSetting { get; set; }
 
         //TODO: How to signal a change? PropertyChanged? Setting<int>.Value <-- ?
         [Settings.Number]
-        public int NumberSetting { get; } //Settings does not have any setters, unless they are ReadOnly.
+        public int NumberSetting { get; set; }
 
         //TODO: Subtypes for ex. extensions etc.
         [Events.Communicate]

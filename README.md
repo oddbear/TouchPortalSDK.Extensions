@@ -17,8 +17,9 @@ Things I have tried:
 * MSBuild custom task:
 > Uses standard reflection.<br />
 > Issues like locks from MSBuild.exe etc.<br />
-> Hard to make work for both .Net 4x and netstandard.
+> Hard to make work for both .Net 4x and netstandard.<br />
+> Might be the ultimate solution here.
 
-Things I have not tried yet:
 * dotnet CLI tools:
-> Might only work for new csproj type, and that would be Ok.
+> Might only work for new csproj type, and that would be Ok.<br />
+> Might be the simplest solution.
